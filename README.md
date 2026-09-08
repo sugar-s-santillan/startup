@@ -2,13 +2,19 @@
 
 [My Notes](notes.md)
 
-THIS IS WRITTEN FROM GITHUB. A brief description of the application here. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+## Purpose
+
+The purpose of this application is to improve an existing webpage within the company portal I work with. The portal is currently used to manage mortgage leads and active mortgage loans. When a loan officer selects a lead, they can access that lead’s profile, which contains information collected through a third-party advertising company.
+
+The existing lead profile also includes a pricing calculator that was intended to help loan officers estimate potential loan terms, such as interest rates, loan length, and monthly payments. However, the calculator is currently broken and is not practical to maintain because mortgage pricing depends on too many variables for a simple calculator to accurately account for.
+
+My goal is to redesign this portion of the webpage and replace the pricing calculator with an underwriting guideline matrix. One of the biggest challenges loan officers currently face is determining which lenders a borrower may qualify with before attempting to price the loan. The guideline matrix will use information about the borrower and loan to rule out lenders whose requirements are not met. It will also consolidate important lender guidelines into one location, allowing loan officers to quickly compare available options and determine where a borrower is most likely to qualify.
+
+Ultimately, this improvement is intended to make the qualification and pricing process faster, simpler, and more organized for loan officers.
+
 
 > [!NOTE]
-> MODIFY This is a template for your startup application. You must modify this `README.md` file for each phase of your development. You only need to fill in the section for each deliverable when that deliverable is submitted in Canvas. Without completing the section for a deliverable, the TA will not know what to look for when grading your submission. Feel free to add additional information to each deliverable description, but make sure you at least have the list of rubric items and a description of what you did for each item.
-
-> [!NOTE]
-> If you are not familiar with Markdown then you should review the [documentation](https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax) before continuing.
+> AI was used to revise the Purpose section above. 
 
 ### Elevator pitch
 
