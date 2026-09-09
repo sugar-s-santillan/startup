@@ -57,7 +57,7 @@ The hand-drawn outline embedded above is a simpler representation of the same co
 I am going to use the required technologies in the following ways.
 
 - **HTML** - HTML will provide the backbone structure of the application. It will contain the three different sections as well as hold the information and loan details. 
-- **CSS** - CSS will add flavor and style to the HTML backbone. I am going to utilize the already existing CSS color scheme and palette used at our company. I will also use the font, spacing, indicators, etc.
+- **CSS** - CSS will add flavor and style to the HTML backbone. I am going to utilize the already existing CSS color scheme and palette used at our company. I will also use the font, spacing, indicators, etc. Something I personally want to add is animations. When a lender is no longer applicable, I want it to light up red and phase away. So it reorganizes itself alongside changing colors. 
 - **React** - React will be the frontend framework used to engage with the user (loan officer). It will be used for components, displaying information/warnings. and update the webpage as changes are made.
 - **Service** - I will use AWS to host and Node.js as a backend service layer that will provide server functionality. It will handle retrieving and sending data through API's. 
 - **DB/Login** - Idk if we get to pick which Database service for our projects, but if I could I would select Supabase. The database will authenticate borrowers and store loan/borrower information. 
