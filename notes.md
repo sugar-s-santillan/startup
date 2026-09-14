@@ -15,7 +15,9 @@ I love web programming
 
 ## AWS
 
-Interesting things I have learned about AWS
+URL: http://44.205.198.203/
+Server Address: http://44.205.198.203/
+ssh -i ./cs260-key.pem ubuntu@44.205.198.203
 
 ## HTML
 
