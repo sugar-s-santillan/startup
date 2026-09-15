@@ -16,7 +16,7 @@ I love web programming
 ## AWS
 
 
-URL: http://sugarsantillan.com
+URL: https://sugarsantillan.com (now secured)
 Server Address: http://44.205.198.203/
 ssh -i ./cs260-key.pem ubuntu@44.205.198.203
 
