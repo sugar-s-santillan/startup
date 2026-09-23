@@ -25,7 +25,8 @@ I configured Caddy. I enabled automatic HTTPS certificate management and HTTP-to
 
 ## HTML
 
-Interesting things I have learned about HTML
+I learned how HTML uses built-in elements and attributes to structure webpages. It is not used for color or scheme. CSS handles that part. HTML is just building the elements and structure of a webpage. I also learned how deployment scripts use SSH and SCP to connect to an AWS server, remove the previous website files, and upload the updated files using my .pem key.
+
 
 ## React
 
