@@ -84,82 +84,82 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
-- [x] **Rented EC2 server** - I did not complete this part of the deliverable.
-- [x] **Leased domain name** - I did not complete this part of the deliverable.
-- [x] **Server accessible** from my domain: [https://yourdomainnamehere.click](https://yourdomainnamehere.click) - I did not complete this part of the deliverable.
+- [x] **Rented EC2 server** - I did complete this part of the deliverable.
+- [x] **Leased domain name** - I did complete this part of the deliverable.
+- [x] **Server accessible** from my domain: [https://yourdomainnamehere.click](https://yourdomainnamehere.click) - I did complete this part of the deliverable.
 
 ## 🚀 HTML deliverable
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
 - [x] I completed the prerequisites for this deliverable (Simon deployed, GitHub link, Git commits)
-- [x] **HTML pages** - I did not complete this part of the deliverable.
-- [x] **Proper HTML element usage** - I did not complete this part of the deliverable.
-- [x] **Links** - I did not complete this part of the deliverable.
-- [x] **Text** - I did not complete this part of the deliverable.
-- [x] **3rd party API placeholder** - I did not complete this part of the deliverable.
-- [x] **Images** - I did not complete this part of the deliverable.
-- [x] **Login placeholder** - I did not complete this part of the deliverable.
-- [x] **DB data placeholder** - I did not complete this part of the deliverable.
-- [x] **WebSocket placeholder** - I did not complete this part of the deliverable.
+- [x] **HTML pages** - I did complete this part of the deliverable.
+- [x] **Proper HTML element usage** - I did complete this part of the deliverable.
+- [x] **Links** - I did complete this part of the deliverable.
+- [x] **Text** - I did complete this part of the deliverable.
+- [x] **3rd party API placeholder** - I did complete this part of the deliverable.
+- [x] **Images** - I did complete this part of the deliverable.
+- [x] **Login placeholder** - I did complete this part of the deliverable.
+- [x] **DB data placeholder** - I did complete this part of the deliverable.
+- [x] **WebSocket placeholder** - I did complete this part of the deliverable.
 
 ## 🚀 CSS deliverable
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
 - [ ] I completed the prerequisites for this deliverable (Simon deployed, GitHub link, Git commits)
-- [ ] **Visually appealing colors and layout. No overflowing elements.** - I did not complete this part of the deliverable.
-- [ ] **Use of a CSS framework** - I did not complete this part of the deliverable.
-- [ ] **All visual elements styled using CSS** - I did not complete this part of the deliverable.
-- [ ] **Responsive to window resizing using flexbox and/or grid display** - I did not complete this part of the deliverable.
-- [ ] **Use of a imported font** - I did not complete this part of the deliverable.
-- [ ] **Use of different types of selectors including element, class, ID, and pseudo selectors** - I did not complete this part of the deliverable.
+- [ ] **Visually appealing colors and layout. No overflowing elements.** - I did complete this part of the deliverable.
+- [ ] **Use of a CSS framework** - I did complete this part of the deliverable.
+- [ ] **All visual elements styled using CSS** - I did complete this part of the deliverable.
+- [ ] **Responsive to window resizing using flexbox and/or grid display** - I did complete this part of the deliverable.
+- [ ] **Use of a imported font** - I did complete this part of the deliverable.
+- [ ] **Use of different types of selectors including element, class, ID, and pseudo selectors** - I did complete this part of the deliverable.
 
 ## 🚀 React part 1: Routing deliverable
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
 - [ ] I completed the prerequisites for this deliverable (Simon deployed, GitHub link, Git commits)
-- [ ] **Bundled using Vite** - I did not complete this part of the deliverable.
-- [ ] **Components** - I did not complete this part of the deliverable.
-- [ ] **Router** - I did not complete this part of the deliverable.
+- [ ] **Bundled using Vite** - I did complete this part of the deliverable.
+- [ ] **Components** - I did complete this part of the deliverable.
+- [ ] **Router** - I did complete this part of the deliverable.
 
 ## 🚀 React part 2: Reactivity deliverable
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
 - [ ] I completed the prerequisites for this deliverable (Simon deployed, GitHub link, Git commits)
-- [ ] **All functionality implemented or mocked out** - I did not complete this part of the deliverable.
-- [ ] **Hooks** - I did not complete this part of the deliverable.
+- [ ] **All functionality implemented or mocked out** - I did complete this part of the deliverable.
+- [ ] **Hooks** - I did complete this part of the deliverable.
 
 ## 🚀 Service deliverable
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
 - [ ] I completed the prerequisites for this deliverable (Simon deployed, GitHub link, Git commits)
-- [ ] **Node.js/Express HTTP service** - I did not complete this part of the deliverable.
-- [ ] **Static middleware for frontend** - I did not complete this part of the deliverable.
-- [ ] **Calls to third party endpoints** - I did not complete this part of the deliverable.
-- [ ] **Backend service endpoints** - I did not complete this part of the deliverable.
-- [ ] **Frontend calls service endpoints** - I did not complete this part of the deliverable.
-- [ ] **Supports registration, login, logout, and restricted endpoint** - I did not complete this part of the deliverable.
-- [ ] **Uses BCrypt to hash passwords** - I did not complete this part of the deliverable.
+- [ ] **Node.js/Express HTTP service** - I did complete this part of the deliverable.
+- [ ] **Static middleware for frontend** - I did complete this part of the deliverable.
+- [ ] **Calls to third party endpoints** - I did complete this part of the deliverable.
+- [ ] **Backend service endpoints** - I did complete this part of the deliverable.
+- [ ] **Frontend calls service endpoints** - I did complete this part of the deliverable.
+- [ ] **Supports registration, login, logout, and restricted endpoint** - I did complete this part of the deliverable.
+- [ ] **Uses BCrypt to hash passwords** - I did complete this part of the deliverable.
 
 ## 🚀 DB deliverable
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
 - [ ] I completed the prerequisites for this deliverable (Simon deployed, GitHub link, Git commits)
-- [ ] **Stores data in MongoDB** - I did not complete this part of the deliverable.
-- [ ] **Stores credentials in MongoDB** - I did not complete this part of the deliverable.
+- [ ] **Stores data in MongoDB** - I did complete this part of the deliverable.
+- [ ] **Stores credentials in MongoDB** - I did complete this part of the deliverable.
 
 ## 🚀 WebSocket deliverable
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
 - [ ] I completed the prerequisites for this deliverable (Simon deployed, GitHub link, Git commits)
-- [ ] **Backend listens for WebSocket connection** - I did not complete this part of the deliverable.
-- [ ] **Frontend makes WebSocket connection** - I did not complete this part of the deliverable.
-- [ ] **Data sent over WebSocket connection** - I did not complete this part of the deliverable.
-- [ ] **WebSocket data displayed** - I did not complete this part of the deliverable.
-- [ ] **Application is fully functional** - I did not complete this part of the deliverable.
+- [ ] **Backend listens for WebSocket connection** - I did complete this part of the deliverable.
+- [ ] **Frontend makes WebSocket connection** - I did complete this part of the deliverable.
+- [ ] **Data sent over WebSocket connection** - I did complete this part of the deliverable.
+- [ ] **WebSocket data displayed** - I did complete this part of the deliverable.
+- [ ] **Application is fully functional** - I did complete this part of the deliverable.
