@@ -3,9 +3,123 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Loan Pricing</title>
 </head>
+
 <body>
-    <p>pricing.html page</p>
+    <header>
+        <nav>
+            <a href="index.html">Home</a>
+        </nav>
+        <h1>John Doe</h1>
+    </header>
+
+    <main>
+        <section>
+            <h2>Loan Details</h2>
+
+            <p><strong>Loan Officer:</strong> Leo</p>
+            <p><strong>Full Name:</strong> John Doe</p>
+            <p><strong>Email:</strong> john.doe@email.com</p>
+            <p><strong>Phone:</strong> (512) 555-5555</p>
+            <p><strong>Address:</strong> 2855 Ridgemont Drive</p>
+            <p><strong>City:</strong> Austin</p>
+            <p><strong>State:</strong> Texas</p>
+            <p><strong>ZIP:</strong> 78704</p>
+        </section>
+
+        <section>
+            <h2>Pricing</h2>
+
+            <form>
+                <fieldset>
+                    <legend>Loan Type</legend>
+
+                    <input type="radio" id="purchase" name="loanType"
+                           value="purchase" checked>
+                    <label for="purchase">Purchase</label>
+
+                    <input type="radio" id="refinance" name="loanType"
+                           value="refinance">
+                    <label for="refinance">Refinance</label>
+                </fieldset>
+
+                <p>
+                    <label for="propertyValue">Property Value</label>
+                    <input type="number" id="propertyValue"
+                           name="propertyValue">
+                </p>
+
+                <p>
+                    <label for="loanAmount">Loan Amount</label>
+                    <input type="number" id="loanAmount" name="loanAmount">
+                </p>
+
+                <p>
+                    <label for="refinanceType">Refinance Type</label>
+                    <select id="refinanceType" name="refinanceType">
+                        <option value="cashOut">Cash-Out</option>
+                        <option value="rateTerm">Rate and Term</option>
+                    </select>
+                </p>
+
+                <p>
+                    <label for="creditScore">Borrower Credit Score</label>
+                    <input type="number" id="creditScore" name="creditScore">
+                </p>
+
+                <button type="submit">Find Eligible Lenders</button>
+            </form>
+        </section>
+
+        <section>
+            <h2>Eligible Lenders</h2>
+
+            <p>Database lender guidelines will appear here.</p>
+
+            <table>
+                <tr>
+                    <th>Guideline</th>
+                    <th>OCMBC</th>
+                    <th>BPL</th>
+                </tr>
+                <tr>
+                    <th>Product</th>
+                    <td>DSCR 30-Year Fixed</td>
+                    <td>Bridge Loan</td>
+                </tr>
+                <tr>
+                    <th>Minimum Credit Score</th>
+                    <td>660</td>
+                    <td>620</td>
+                </tr>
+                <tr>
+                    <th>Minimum Loan Amount</th>
+                    <td>$75,000</td>
+                    <td>$100,000</td>
+                </tr>
+                <tr>
+                    <th>Minimum Property Value</th>
+                    <td>$100,000</td>
+                    <td>$150,000</td>
+                </tr>
+                <tr>
+                    <th>Late Payments</th>
+                    <td>None in 12 months</td>
+                    <td>One allowed</td>
+                </tr>
+            </table>
+
+            <p>Third-party pricing results will appear here.</p>
+            <p>Live lender guideline updates will appear here.</p>
+        </section>
+    </main>
+
+    <footer>
+        <p>Sugar Santillan</p>
+        <a href="https://github.com/sugar-s-santillan/startup">
+            GitHub Repository
+        </a>
+    </footer>
 </body>
 </html>
