@@ -52,6 +52,7 @@ The hand-drawn outline embedded above is a simpler representation of the same co
 
 
 
+
 ### Technologies
 
 I am going to use the required technologies in the following ways.
@@ -107,13 +108,13 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
-- [ ] I completed the prerequisites for this deliverable (Simon deployed, GitHub link, Git commits)
-- [ ] **Visually appealing colors and layout. No overflowing elements.** - I did complete this part of the deliverable.
-- [ ] **Use of a CSS framework** - I did complete this part of the deliverable.
-- [ ] **All visual elements styled using CSS** - I did complete this part of the deliverable.
-- [ ] **Responsive to window resizing using flexbox and/or grid display** - I did complete this part of the deliverable.
-- [ ] **Use of a imported font** - I did complete this part of the deliverable.
-- [ ] **Use of different types of selectors including element, class, ID, and pseudo selectors** - I did complete this part of the deliverable.
+- [x] I completed the prerequisites for this deliverable (Simon deployed, GitHub link, Git commits)
+- [x] **Visually appealing colors and layout. No overflowing elements.** - I created a consistent professional design across the login, leads, and pricing pages using a slate and blue color palette, cards, styled forms, navigation, tables, buttons, and responsive table containers.
+- [x] **Use of a CSS framework** - I added Tailwind CSS and used Tailwind utilities for layout, Flexbox, Grid, spacing, and responsive behavior.
+- [x] **All visual elements styled using CSS** - I created a shared `main.css` stylesheet that styles the navigation, forms, inputs, buttons, cards, tables, links, borrower information, lender matrix, footer, and other application elements.
+- [x] **Responsive to window resizing using flexbox and/or grid display** - I used Flexbox and CSS Grid throughout the application. The pricing page changes between a three-column desktop layout, a two-column medium layout with the lender matrix underneath, and a single-column mobile layout.
+- [x] **Use of an imported font** - I imported the Inter font from Google Fonts and applied it throughout the application.
+- [x] **Use of different types of selectors including element, class, ID, and pseudo selectors** - I used element selectors such as `body` and `input`, class selectors such as `.content-card` and `.primary-button`, the `#app-title` ID selector, and pseudo selectors including `:hover`, `:focus`, `:checked`, and `:disabled`.
 
 ## 🚀 React part 1: Routing deliverable
 
