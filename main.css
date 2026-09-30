@@ -702,33 +702,92 @@ footer p {
     font-weight: 600;
 }
 
-.radio-options {
-    display: flex;
+/* =========================
+   Loan Type Selection
+   ========================= */
 
-    gap: 1rem;
+.loan-type-fieldset {
+    margin: 0 0 1.5rem 0;
+    padding: 0;
+
+    border: none;
+}
+
+.loan-type-fieldset legend {
+    margin-bottom: 0.5rem;
+
+    color: #334155;
+
+    font-size: 0.875rem;
+    font-weight: 600;
+}
+
+.radio-options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+
+    gap: 0.75rem;
 }
 
 .radio-option {
-    display: flex;
-    align-items: center;
-
-    gap: 0.5rem;
-
     margin: 0;
 
     cursor: pointer;
 }
 
+/* Hide the default radio circle */
 .radio-option input {
-    width: auto;
+    position: absolute;
 
-    margin: 0;
+    opacity: 0;
+    pointer-events: none;
 }
 
-.radio-option span {
+.radio-card {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;
+
+    padding: 0.8rem 1rem;
+
     color: #475569;
+    background-color: white;
 
     font-size: 0.9rem;
+    font-weight: 600;
+
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+
+    transition:
+        background-color 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.radio-option:hover .radio-card {
+    background-color: #f8fafc;
+    border-color: #94a3b8;
+}
+
+/* Selected option */
+.radio-option input:checked + .radio-card {
+    color: #1d4ed8;
+    background-color: #eff6ff;
+
+    border-color: #2563eb;
+
+    box-shadow:
+        0 0 0 1px #2563eb;
+}
+
+/* Keyboard accessibility */
+.radio-option input:focus-visible + .radio-card {
+    outline: 2px solid #2563eb;
+    outline-offset: 2px;
 }
 
 
