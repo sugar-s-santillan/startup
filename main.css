@@ -536,36 +536,6 @@ footer p {
     margin-bottom: 2rem;
 }
 
-.pricing-workspace {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr);
-    gap: 1.5rem;
-}
-
-.pricing-workspace > .content-card {
-    min-width: 0;
-}
-
-@media (min-width: 768px) {
-    .pricing-workspace {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-
-    .lender-section {
-        grid-column: 1 / -1;
-    }
-}
-
-@media (min-width: 1280px) {
-    .pricing-workspace {
-        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1.5fr);
-    }
-
-    .lender-section {
-        grid-column: auto;
-    }
-}
-
 .page-label {
     margin: 0 0 0.4rem 0;
 
@@ -769,8 +739,6 @@ footer p {
 .radio-option input {
     position: absolute;
 
-    width: auto;
-
     opacity: 0;
     pointer-events: none;
 }
@@ -863,7 +831,7 @@ button:disabled {
    ========================= */
 
 .lender-section {
-    margin-top: 0;
+    margin-top: 1.5rem;
 }
 
 .integration-status {
@@ -904,11 +872,6 @@ button:disabled {
 /* =========================
    Lender Table
    ========================= */
-
-.table-wrapper {
-    max-width: 100%;
-    overflow-x: auto;
-}
 
 .lender-table {
     width: 100%;
