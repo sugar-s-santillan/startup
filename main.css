@@ -1,23 +1,268 @@
+/* Imported font */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
-/* Element selector */
+
+/* =========================
+   Global
+   ========================= */
+
+* {
+    box-sizing: border-box;
+}
+
 body {
-  font-family: 'Inter', sans-serif;
+    margin: 0;
+    background-color: #f1f5f9;
+    color: #0f172a;
+    font-family: 'Inter', sans-serif;
 }
 
-/* Class selector */
 .page-container {
-  width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding-left: 2rem;
+    padding-right: 2rem;
 }
 
-/* ID selector */
+
+/* =========================
+   Header
+   ========================= */
+
+header {
+    min-height: 75px;
+    background-color: #0f172a;
+    color: white;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
 #app-title {
-  letter-spacing: -0.025em;
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: -0.025em;
 }
 
-/* Pseudo selector */
+
+/* =========================
+   Main
+   ========================= */
+
+main {
+    padding: 3rem 1.5rem;
+}
+
+
+/* =========================
+   Login Card
+   ========================= */
+
+.login-card {
+    width: 100%;
+    max-width: 430px;
+
+    padding: 2.5rem;
+
+    background-color: white;
+
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+
+    box-shadow:
+        0 10px 15px -3px rgba(0, 0, 0, 0.08),
+        0 4px 6px -4px rgba(0, 0, 0, 0.08);
+}
+
+.login-heading {
+    margin-bottom: 2rem;
+}
+
+.login-heading h2 {
+    margin: 0;
+
+    font-size: 1.75rem;
+    font-weight: 700;
+
+    color: #0f172a;
+}
+
+.login-heading p {
+    margin-top: 0.5rem;
+    margin-bottom: 0;
+
+    color: #64748b;
+}
+
+
+/* =========================
+   Form
+   ========================= */
+
+.form-group {
+    margin-bottom: 1.25rem;
+}
+
+label {
+    display: block;
+
+    margin-bottom: 0.5rem;
+
+    font-size: 0.875rem;
+    font-weight: 600;
+
+    color: #334155;
+}
+
+input {
+    width: 100%;
+
+    padding: 0.75rem 1rem;
+
+    font-family: inherit;
+    font-size: 1rem;
+
+    color: #0f172a;
+    background-color: white;
+
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+
+    outline: none;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+input::placeholder {
+    color: #94a3b8;
+}
+
+input:focus {
+    border-color: #2563eb;
+
+    box-shadow:
+        0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+
+/* =========================
+   Buttons
+   ========================= */
+
+.button-group {
+    display: grid;
+    gap: 0.75rem;
+
+    margin-top: 1.75rem;
+}
+
+button {
+    width: 100%;
+
+    padding: 0.75rem 1rem;
+
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: 600;
+
+    border-radius: 8px;
+
+    cursor: pointer;
+
+    transition:
+        background-color 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.1s ease;
+}
+
+.primary-button {
+    color: white;
+    background-color: #2563eb;
+
+    border: 1px solid #2563eb;
+}
+
+.primary-button:hover {
+    background-color: #1d4ed8;
+    border-color: #1d4ed8;
+}
+
+.secondary-button {
+    color: #334155;
+    background-color: white;
+
+    border: 1px solid #cbd5e1;
+}
+
+.secondary-button:hover {
+    background-color: #f8fafc;
+    border-color: #94a3b8;
+}
+
+button:active {
+    transform: translateY(1px);
+}
+
+
+/* =========================
+   Footer
+   ========================= */
+
+footer {
+    padding-top: 1.25rem;
+    padding-bottom: 1.25rem;
+
+    background-color: white;
+
+    border-top: 1px solid #e2e8f0;
+}
+
+footer p {
+    margin: 0;
+
+    font-size: 0.875rem;
+
+    color: #64748b;
+}
+
+.github-link {
+    font-size: 0.875rem;
+    font-weight: 600;
+
+    color: #2563eb;
+
+    text-decoration: none;
+}
+
 .github-link:hover {
-  text-decoration: underline;
+    color: #1e40af;
+    text-decoration: underline;
+}
+
+
+/* =========================
+   Responsive
+   ========================= */
+
+@media (max-width: 640px) {
+
+    .page-container {
+        padding-left: 1.25rem;
+        padding-right: 1.25rem;
+    }
+
+    #app-title {
+        font-size: 1.25rem;
+    }
+
+    main {
+        padding: 2rem 1rem;
+    }
+
+    .login-card {
+        padding: 1.75rem;
+    }
+
 }
