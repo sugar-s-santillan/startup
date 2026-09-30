@@ -3,132 +3,397 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Loan Pricing</title>
+
+    <title>Loan Pricing | Prometheus Mortgage</title>
+
+    <!-- Tailwind CSS -->
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+    <!-- Custom CSS -->
     <link rel="stylesheet" href="main.css">
 </head>
 
-<body>
-    <header>
-        <nav>
-            <a href="leads.html">Back to Leads Page</a>
+<body class="min-h-screen flex flex-col">
+
+    <!-- Navigation -->
+    <header class="dashboard-header">
+
+        <nav class="page-container flex justify-between items-center">
+
+            <a href="leads.html" class="brand">
+                Prometheus Mortgage
+            </a>
+
+            <a href="leads.html" class="back-link">
+                ← Back to Leads
+            </a>
+
         </nav>
-        <h1>John Doe</h1>
+
     </header>
 
-    <main>
-        <section>
-            <h2>Loan Details</h2>
 
-            <p><strong>Loan Officer:</strong> Leo</p>
-            <p><strong>Full Name:</strong> John Doe</p>
-            <p><strong>Email:</strong> john.doe@email.com</p>
-            <p><strong>Phone:</strong> (512) 555-5555</p>
-            <p><strong>Address:</strong> 2855 Ridgemont Drive</p>
-            <p><strong>City:</strong> Austin</p>
-            <p><strong>State:</strong> Texas</p>
-            <p><strong>ZIP:</strong> 78704</p>
-        </section>
-        <p>This is what this page will eventually look like!</p>
-        <img src="images/future-page.png" alt="Planned mortgage pricing page" width="500">
-        <section>
-            <h2>Pricing</h2>
+    <main class="flex-1">
 
-            <form>
-                <fieldset>
-                    <legend>Loan Type</legend>
+        <div class="page-container">
 
-                    <input type="radio" id="purchase" name="loanType"
-                           value="purchase" checked>
-                    <label for="purchase">Purchase</label>
+            <!-- Page Heading -->
+            <section class="pricing-heading">
 
-                    <input type="radio" id="refinance" name="loanType"
-                           value="refinance">
-                    <label for="refinance">Refinance</label>
-                </fieldset>
+                <div>
+                    <p class="page-label">Loan Pricing</p>
 
-                <p>
-                    <label for="propertyValue">Property Value</label>
-                    <input type="number" id="propertyValue"
-                           name="propertyValue">
-                </p>
+                    <h1>John Doe</h1>
 
-                <p>
-                    <label for="loanAmount">Loan Amount</label>
-                    <input type="number" id="loanAmount" name="loanAmount">
-                </p>
+                    <p>
+                        Review borrower information and compare eligible lenders.
+                    </p>
+                </div>
 
-                <p>
-                    <label for="refinanceType">Refinance Type</label>
-                    <select id="refinanceType" name="refinanceType">
-                        <option value="cashOut">Cash-Out</option>
-                        <option value="rateTerm">Rate and Term</option>
-                    </select>
-                </p>
+            </section>
 
-                <p>
-                    <label for="creditScore">Borrower Credit Score</label>
-                    <input type="number" id="creditScore" name="creditScore">
-                </p>
 
-                <button type="button" disabled>Create Account (Coming Soon)</button>
-            </form>
-        </section>
+            <!-- Main Pricing Workspace -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
 
-        <section>
-            <h2>Eligible Lenders</h2>
+                <!-- Loan Details -->
+                <section class="content-card">
 
-            <p>
-                Third-party property valuation and pricing data will appear here.
-            </p>
+                    <div class="card-heading">
+                        <h2>Loan Details</h2>
 
-            <p>
-                Real-time lender guideline updates received through WebSocket will appear here.
-            </p>
+                        <p>
+                            Borrower and property information
+                        </p>
+                    </div>
 
-            <table>
-                <tr>
-                    <th>Guideline</th>
-                    <th>OCMBC</th>
-                    <th>BPL</th>
-                </tr>
-                <tr>
-                    <th>Product</th>
-                    <td>DSCR 30-Year Fixed</td>
-                    <td>Bridge Loan</td>
-                </tr>
-                <tr>
-                    <th>Minimum Credit Score</th>
-                    <td>660</td>
-                    <td>620</td>
-                </tr>
-                <tr>
-                    <th>Minimum Loan Amount</th>
-                    <td>$75,000</td>
-                    <td>$100,000</td>
-                </tr>
-                <tr>
-                    <th>Minimum Property Value</th>
-                    <td>$100,000</td>
-                    <td>$150,000</td>
-                </tr>
-                <tr>
-                    <th>Late Payments</th>
-                    <td>None in 12 months</td>
-                    <td>One allowed</td>
-                </tr>
-            </table>
+                    <div class="loan-details">
 
-            <p>Third-party pricing results will appear here.</p>
-            <p>Live lender guideline updates will appear here.</p>
-        </section>
+                        <div class="detail-item">
+                            <span>Loan Officer</span>
+                            <strong>Leo</strong>
+                        </div>
+
+                        <div class="detail-item">
+                            <span>Full Name</span>
+                            <strong>John Doe</strong>
+                        </div>
+
+                        <div class="detail-item">
+                            <span>Email</span>
+                            <strong>john.doe@email.com</strong>
+                        </div>
+
+                        <div class="detail-item">
+                            <span>Phone</span>
+                            <strong>(512) 555-5555</strong>
+                        </div>
+
+                        <div class="detail-item">
+                            <span>Address</span>
+                            <strong>2855 Ridgemont Drive</strong>
+                        </div>
+
+                        <div class="detail-item">
+                            <span>City</span>
+                            <strong>Austin</strong>
+                        </div>
+
+                        <div class="detail-item">
+                            <span>State</span>
+                            <strong>Texas</strong>
+                        </div>
+
+                        <div class="detail-item">
+                            <span>ZIP</span>
+                            <strong>78704</strong>
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+                <!-- Pricing Form -->
+                <section class="content-card">
+
+                    <div class="card-heading">
+                        <h2>Pricing</h2>
+
+                        <p>
+                            Enter loan parameters to determine lender eligibility.
+                        </p>
+                    </div>
+
+
+                    <form class="pricing-form">
+
+                        <fieldset class="loan-type-fieldset">
+
+                            <legend>Loan Type</legend>
+
+                            <div class="radio-options">
+
+                                <label class="radio-option">
+
+                                    <input
+                                        type="radio"
+                                        id="purchase"
+                                        name="loanType"
+                                        value="purchase"
+                                        checked
+                                    >
+
+                                    <span>Purchase</span>
+
+                                </label>
+
+
+                                <label class="radio-option">
+
+                                    <input
+                                        type="radio"
+                                        id="refinance"
+                                        name="loanType"
+                                        value="refinance"
+                                    >
+
+                                    <span>Refinance</span>
+
+                                </label>
+
+                            </div>
+
+                        </fieldset>
+
+
+                        <div class="form-group">
+
+                            <label for="propertyValue">
+                                Property Value
+                            </label>
+
+                            <input
+                                type="number"
+                                id="propertyValue"
+                                name="propertyValue"
+                                placeholder="$250,000"
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="loanAmount">
+                                Loan Amount
+                            </label>
+
+                            <input
+                                type="number"
+                                id="loanAmount"
+                                name="loanAmount"
+                                placeholder="$200,000"
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="refinanceType">
+                                Refinance Type
+                            </label>
+
+                            <select
+                                id="refinanceType"
+                                name="refinanceType"
+                            >
+                                <option value="cashOut">
+                                    Cash-Out
+                                </option>
+
+                                <option value="rateTerm">
+                                    Rate and Term
+                                </option>
+                            </select>
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="creditScore">
+                                Borrower Credit Score
+                            </label>
+
+                            <input
+                                type="number"
+                                id="creditScore"
+                                name="creditScore"
+                                placeholder="720"
+                            >
+
+                        </div>
+
+
+                        <button
+                            type="button"
+                            class="primary-button"
+                            disabled
+                        >
+                            Price Loan (Coming Soon)
+                        </button>
+
+                    </form>
+
+                </section>
+
+            </div>
+
+
+            <!-- Future Application Preview -->
+            <section class="content-card preview-card">
+
+                <div class="card-heading">
+
+                    <h2>Future Application</h2>
+
+                    <p>
+                        Planned design for the completed mortgage pricing platform.
+                    </p>
+
+                </div>
+
+                <img
+                    src="images/future-page.png"
+                    alt="Planned mortgage pricing page"
+                    class="future-page-image"
+                >
+
+            </section>
+
+
+            <!-- Eligible Lenders -->
+            <section class="content-card lender-section">
+
+                <div class="card-heading">
+
+                    <h2>Eligible Lenders</h2>
+
+                    <p>
+                        Compare lender guidelines for the current loan scenario.
+                    </p>
+
+                </div>
+
+
+                <div class="integration-status">
+
+                    <div class="status-item">
+                        <span class="status-dot"></span>
+
+                        Third-party property valuation and pricing data will appear here.
+                    </div>
+
+                    <div class="status-item">
+                        <span class="status-dot"></span>
+
+                        Real-time lender guideline updates received through WebSocket will appear here.
+                    </div>
+
+                </div>
+
+
+                <div class="table-wrapper">
+
+                    <table class="lender-table">
+
+                        <thead>
+                            <tr>
+                                <th>Guideline</th>
+                                <th>OCMBC</th>
+                                <th>BPL</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+
+                            <tr>
+                                <th>Product</th>
+                                <td>DSCR 30-Year Fixed</td>
+                                <td>Bridge Loan</td>
+                            </tr>
+
+                            <tr>
+                                <th>Minimum Credit Score</th>
+                                <td>660</td>
+                                <td>620</td>
+                            </tr>
+
+                            <tr>
+                                <th>Minimum Loan Amount</th>
+                                <td>$75,000</td>
+                                <td>$100,000</td>
+                            </tr>
+
+                            <tr>
+                                <th>Minimum Property Value</th>
+                                <td>$100,000</td>
+                                <td>$150,000</td>
+                            </tr>
+
+                            <tr>
+                                <th>Late Payments</th>
+                                <td>None in 12 months</td>
+                                <td>One allowed</td>
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+                <div class="future-results">
+
+                    <p>
+                        Third-party pricing results will appear here.
+                    </p>
+
+                    <p>
+                        Live lender guideline updates will appear here.
+                    </p>
+
+                </div>
+
+            </section>
+
+        </div>
+
     </main>
 
+
     <footer>
-        <p>Sugar Santillan</p>
-        <a href="https://github.com/sugar-s-santillan/startup">
-            GitHub Repository
-        </a>
+
+        <div class="page-container flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
+
+            <p>
+                Created by Sugar Santillan
+            </p>
+
+            <a
+                href="https://github.com/sugar-s-santillan/startup"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="github-link"
+            >
+                GitHub Repository
+            </a>
+
+        </div>
+
     </footer>
+
 </body>
 </html>
