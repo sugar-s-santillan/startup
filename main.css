@@ -266,3 +266,251 @@ footer p {
     }
 
 }
+
+/* =========================
+   Dashboard Header
+   ========================= */
+
+.dashboard-header {
+    min-height: auto;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+
+    background-color: #0f172a;
+}
+
+.brand {
+    color: white;
+
+    font-size: 1.1rem;
+    font-weight: 700;
+
+    text-decoration: none;
+}
+
+.brand:hover {
+    color: #bfdbfe;
+}
+
+.logged-in-user {
+    font-size: 0.875rem;
+
+    color: #cbd5e1;
+}
+
+.logout-link {
+    padding: 0.5rem 0.85rem;
+
+    color: white;
+
+    font-size: 0.875rem;
+    font-weight: 600;
+
+    border: 1px solid #475569;
+    border-radius: 6px;
+
+    text-decoration: none;
+
+    transition:
+        background-color 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.logout-link:hover {
+    background-color: #1e293b;
+    border-color: #64748b;
+}
+
+
+/* =========================
+   Dashboard
+   ========================= */
+
+.dashboard-heading {
+    margin-bottom: 2rem;
+}
+
+.dashboard-heading h1 {
+    margin: 0;
+
+    font-size: 2rem;
+    font-weight: 700;
+
+    color: #0f172a;
+}
+
+.dashboard-heading p {
+    margin-top: 0.5rem;
+    margin-bottom: 0;
+
+    color: #64748b;
+}
+
+
+/* =========================
+   Table Card
+   ========================= */
+
+.table-card {
+    overflow: hidden;
+
+    background-color: white;
+
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+
+    box-shadow:
+        0 4px 6px -1px rgba(0, 0, 0, 0.05),
+        0 2px 4px -2px rgba(0, 0, 0, 0.05);
+}
+
+.table-heading {
+    padding: 1.5rem;
+
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.table-heading h2 {
+    margin: 0;
+
+    font-size: 1.25rem;
+    font-weight: 700;
+
+    color: #0f172a;
+}
+
+.table-heading p {
+    margin-top: 0.25rem;
+    margin-bottom: 0;
+
+    font-size: 0.875rem;
+
+    color: #64748b;
+}
+
+
+/* Allows table to scroll on small screens
+   instead of overflowing the page */
+.table-wrapper {
+    overflow-x: auto;
+}
+
+
+/* =========================
+   Leads Table
+   ========================= */
+
+.leads-table {
+    width: 100%;
+
+    border-collapse: collapse;
+}
+
+.leads-table th {
+    padding: 0.9rem 1.25rem;
+
+    background-color: #f8fafc;
+
+    color: #475569;
+
+    font-size: 0.75rem;
+    font-weight: 700;
+
+    text-align: left;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.leads-table td {
+    padding: 1.1rem 1.25rem;
+
+    color: #475569;
+
+    font-size: 0.9rem;
+
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.leads-table tbody tr:hover {
+    background-color: #f8fafc;
+}
+
+.leads-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.borrower-name {
+    color: #0f172a !important;
+
+    font-weight: 600;
+}
+
+
+/* =========================
+   Loan Type
+   ========================= */
+
+.loan-type {
+    display: inline-block;
+
+    padding: 0.25rem 0.65rem;
+
+    color: #166534;
+    background-color: #dcfce7;
+
+    font-size: 0.75rem;
+    font-weight: 600;
+
+    border-radius: 999px;
+}
+
+
+/* =========================
+   Pricing Link
+   ========================= */
+
+.pricing-link {
+    color: #2563eb;
+
+    font-weight: 600;
+
+    text-decoration: none;
+}
+
+.pricing-link:hover {
+    color: #1e40af;
+
+    text-decoration: underline;
+}
+
+
+/* =========================
+   Dashboard Responsive
+   ========================= */
+
+@media (max-width: 640px) {
+
+    .dashboard-header nav {
+        gap: 1rem;
+    }
+
+    .logged-in-user {
+        display: none;
+    }
+
+    .dashboard-heading h1 {
+        font-size: 1.5rem;
+    }
+
+    .table-heading {
+        padding: 1.25rem;
+    }
+
+    .leads-table th,
+    .leads-table td {
+        white-space: nowrap;
+    }
+
+}
