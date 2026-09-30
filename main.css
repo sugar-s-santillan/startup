@@ -1,0 +1,23 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+/* Element selector */
+body {
+  font-family: 'Inter', sans-serif;
+}
+
+/* Class selector */
+.page-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* ID selector */
+#app-title {
+  letter-spacing: -0.025em;
+}
+
+/* Pseudo selector */
+.github-link:hover {
+  text-decoration: underline;
+}
