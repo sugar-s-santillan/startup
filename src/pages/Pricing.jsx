@@ -1,14 +1,9 @@
-import { Link } from 'react-router-dom';
 import futurePagePreview from '../../images/future-page.png';
-import Footer from '../components/Footer.jsx';
-import Navbar from '../components/Navbar.jsx';
+import PageLayout from '../components/PageLayout.jsx'
 
 export default function Pricing() {
   return (
-    <div className="min-h-screen flex flex-col">
-      <Navbar showBackButton={true} />
-
-      <main className="flex-1">
+    <PageLayout showBackButton>
         <div className="page-container">
           <section className="pricing-heading">
             <div>
@@ -213,9 +208,6 @@ export default function Pricing() {
             </div>
           </section>
         </div>
-      </main>
-
-      <Footer />
-    </div>
+    </PageLayout>
   );
 }
