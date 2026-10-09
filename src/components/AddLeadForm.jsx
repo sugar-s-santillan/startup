@@ -1,15 +1,32 @@
+import { useEffect, useRef } from 'react';
 import FormInput from './FormInput.jsx';
 
 export default function AddLeadForm({ onClose }) {
+  const dialogRef = useRef(null);
+
+  useEffect(() => {
+    const dialog = dialogRef.current;
+    const previousOverflow = document.body.style.overflow;
+    dialog.showModal();
+    document.body.style.overflow = 'hidden';
+
+    return () => {
+      dialog.close();
+      document.body.style.overflow = previousOverflow;
+    };
+  }, []);
+
   return (
-    <div className="modal-overlay" onClick={onClose}>
-      <div
-        className="modal-content"
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="add-lead-title"
-        onClick={(event) => event.stopPropagation()}
-      >
+    <dialog
+      ref={dialogRef}
+      className="modal-overlay"
+      aria-labelledby="add-lead-title"
+      onCancel={onClose}
+      onClick={(event) => {
+        if (event.target === event.currentTarget) onClose();
+      }}
+    >
+      <div className="modal-content">
         <div className="modal-header">
           <h2 id="add-lead-title">Add New Lead</h2>
 
@@ -23,7 +40,7 @@ export default function AddLeadForm({ onClose }) {
           </button>
         </div>
 
-        <form className="pricing-form">
+        <form onSubmit={(event) => event.preventDefault()}>
           <FormInput
             label="Full Name"
             id="fullName"
@@ -75,6 +92,6 @@ export default function AddLeadForm({ onClose }) {
           </div>
         </form>
       </div>
-    </div>
+    </dialog>
   );
 }

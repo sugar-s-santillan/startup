@@ -15,6 +15,7 @@ body {
     background-color: #f1f5f9;
     color: #0f172a;
     font-family: 'Inter', sans-serif;
+    line-height: 1.5;
 }
 
 .page-container {
@@ -49,8 +50,10 @@ header {
    Main
    ========================= */
 
-main {
-    padding: 3rem 1.5rem;
+.page-main {
+    flex: 1;
+    min-width: 0;
+    padding: 3rem 0;
 }
 
 
@@ -114,7 +117,8 @@ label {
     color: #334155;
 }
 
-input {
+input:not([type="radio"]),
+select {
     width: 100%;
 
     padding: 0.75rem 1rem;
@@ -139,7 +143,8 @@ input::placeholder {
     color: #94a3b8;
 }
 
-input:focus {
+input:not([type="radio"]):focus,
+select:focus {
     border-color: #2563eb;
 
     box-shadow:
@@ -159,8 +164,6 @@ input:focus {
 }
 
 button {
-    width: 100%;
-
     padding: 0.75rem 1rem;
 
     font-family: inherit;
@@ -257,8 +260,8 @@ footer p {
         font-size: 1.25rem;
     }
 
-    main {
-        padding: 2rem 1rem;
+    .page-main {
+        padding: 2rem 0;
     }
 
     .login-card {
@@ -441,8 +444,8 @@ footer p {
     border-bottom: none;
 }
 
-.borrower-name {
-    color: #0f172a !important;
+.leads-table .borrower-name {
+    color: #0f172a;
 
     font-weight: 600;
 }
@@ -491,10 +494,6 @@ footer p {
    ========================= */
 
 @media (max-width: 640px) {
-
-    .dashboard-header nav {
-        gap: 1rem;
-    }
 
     .logged-in-user {
         display: none;
@@ -655,51 +654,6 @@ footer p {
 
 .pricing-form {
     padding: 1.5rem;
-}
-
-.pricing-form select {
-    width: 100%;
-
-    padding: 0.75rem 1rem;
-
-    color: #0f172a;
-    background-color: white;
-
-    font-family: inherit;
-    font-size: 1rem;
-
-    border: 1px solid #cbd5e1;
-    border-radius: 8px;
-
-    outline: none;
-}
-
-.pricing-form select:focus {
-    border-color: #2563eb;
-
-    box-shadow:
-        0 0 0 3px rgba(37, 99, 235, 0.15);
-}
-
-
-/* =========================
-   Loan Type
-   ========================= */
-
-.loan-type-fieldset {
-    margin: 0 0 1.5rem 0;
-    padding: 0;
-
-    border: none;
-}
-
-.loan-type-fieldset legend {
-    margin-bottom: 0.5rem;
-
-    color: #334155;
-
-    font-size: 0.875rem;
-    font-weight: 600;
 }
 
 /* =========================
@@ -954,7 +908,7 @@ button:disabled {
     }
 
     .radio-options {
-        flex-direction: column;
+        grid-template-columns: 1fr;
 
         gap: 0.75rem;
     }
@@ -965,115 +919,190 @@ button:disabled {
     }
 
 }
-/* ==========================================
-   ADD LEAD MODAL
-   ========================================== */
+/* Shared layouts */
+.app-layout {
+    min-height: 100vh;
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+}
 
+.login-header,
+.navbar-content,
+.navbar-actions,
+.footer-content {
+    display: flex;
+    align-items: center;
+}
+
+.navbar-content,
+.footer-content {
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.navbar-content {
+    flex-wrap: wrap;
+}
+
+.navbar-actions {
+    gap: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.login-main {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 1.25rem;
+}
+
+.dashboard-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+}
+
+.dashboard-heading button {
+    flex-shrink: 0;
+}
+
+.pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.5rem;
+}
+
+.content-card,
+.table-card {
+    min-width: 0;
+}
+
+.detail-item strong {
+    overflow-wrap: anywhere;
+}
+
+.button-group button,
+.pricing-form > button {
+    width: 100%;
+}
+
+button:focus-visible,
+a:focus-visible {
+    outline: 2px solid #2563eb;
+    outline-offset: 3px;
+}
+
+/* Add Lead modal: native dialog handles focus and Escape. */
 .modal-overlay {
-  position: fixed;
-  inset: 0;
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    max-width: none;
+    height: 100%;
+    max-height: none;
+    margin: 0;
+    padding: 1rem;
+    border: none;
+    background: transparent;
+    overflow-y: auto;
+}
 
-  background: rgba(0, 0, 0, 0.6);
+.modal-overlay[open] {
+    display: flex;
+}
 
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  padding: 1rem;
-  z-index: 1000;
+.modal-overlay::backdrop {
+    background: rgba(15, 23, 42, 0.6);
 }
 
 .modal-content {
-  background: white;
-  color: #1f2937;
-
-  width: 100%;
-  max-width: 500px;
-  max-height: 90vh;
-
-  overflow-y: auto;
-
-  border-radius: 12px;
-  padding: 1.5rem;
-
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+    width: 100%;
+    max-width: 500px;
+    margin: auto;
+    padding: 1.5rem;
+    color: #0f172a;
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
 }
 
 .modal-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
-  margin-bottom: 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
 }
 
 .modal-header h2 {
-  margin: 0;
-  font-size: 1.5rem;
-  font-weight: 600;
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 700;
 }
 
 .modal-close {
-  background: transparent;
-  border: none;
-
-  font-size: 1.25rem;
-  cursor: pointer;
-
-  color: #374151;
+    flex-shrink: 0;
+    width: 2.75rem;
+    height: 2.75rem;
+    padding: 0;
+    color: #475569;
+    background: transparent;
+    border: none;
+    font-size: 1.25rem;
 }
 
 .modal-close:hover {
-  color: #ef4444;
+    background: #f1f5f9;
 }
 
 .modal-actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 0.75rem;
-
-  margin-top: 1.5rem;
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
 }
 
-/* Modal form fields */
-
-.modal-content .form-group {
-  margin-bottom: 1rem;
+@media (max-width: 1023px) {
+    .pricing-grid {
+        grid-template-columns: 1fr;
+    }
 }
 
-.modal-content input,
-.modal-content select {
-  width: 100%;
-}
+@media (max-width: 640px) {
+    .footer-content,
+    .dashboard-heading {
+        flex-direction: column;
+        align-items: flex-start;
+    }
 
-.modal-content label {
-  display: block;
-  margin-bottom: 0.4rem;
-}
+    .dashboard-heading button {
+        width: 100%;
+    }
 
-/* Disabled save button */
+    .navbar-actions {
+        gap: 1rem;
+    }
 
-.modal-content button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
+    .login-main {
+        padding: 2rem 1.25rem;
+    }
 
-/* Mobile responsiveness */
+    .modal-content {
+        padding: 1.25rem;
+    }
 
-@media (max-width: 600px) {
-  .modal-content {
-    padding: 1rem;
-  }
+    .modal-header h2 {
+        font-size: 1.25rem;
+    }
 
-  .modal-header h2 {
-    font-size: 1.25rem;
-  }
+    .modal-actions {
+        flex-direction: column;
+    }
 
-  .modal-actions {
-    flex-direction: column;
-  }
-
-  .modal-actions button {
-    width: 100%;
-  }
+    .modal-actions button {
+        width: 100%;
+    }
 }

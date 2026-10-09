@@ -6,10 +6,10 @@ export default function PageLayout({
   showBackButton = false,
 }) {
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="app-layout">
       <Navbar showBackButton={showBackButton} />
 
-      <main className="flex-1">
+      <main className="page-main">
         {children}
       </main>
 

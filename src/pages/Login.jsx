@@ -11,14 +11,14 @@ export default function Login() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <header className="flex items-center">
+    <div className="app-layout">
+      <header className="login-header">
         <div className="page-container">
           <h1 id="app-title">Prometheus Mortgage Pricer</h1>
         </div>
       </header>
 
-      <main className="flex-1 flex items-center justify-center">
+      <main className="page-main login-main">
         <section className="login-card">
           <div className="login-heading">
             <h2>Welcome back</h2>

@@ -10,7 +10,6 @@ export default function Leads() {
   return (
     <PageLayout>
       <div className="page-container">
-
         {/* Page heading */}
         <section className="dashboard-heading">
           <div>
@@ -26,7 +25,6 @@ export default function Leads() {
             + Add Lead
           </button>
         </section>
-
         {/* Leads table */}
         <section className="table-card">
           <div className="table-heading">
@@ -35,7 +33,7 @@ export default function Leads() {
           </div>
 
           <div className="table-wrapper">
-            <table>
+            <table className="leads-table">
               <thead>
                 <tr>
                   <th>Full Name</th>
@@ -49,13 +47,15 @@ export default function Leads() {
 
               <tbody>
                 <tr>
-                  <td>John Doe</td>
+                  <td className="borrower-name">John Doe</td>
                   <td>123 Main Street</td>
                   <td>720</td>
-                  <td>Purchase</td>
+                  <td>
+                    <span className="loan-type">Purchase</span>
+                  </td>
                   <td>September 23, 2026</td>
                   <td>
-                    <Link to="/pricing" className="table-link">
+                    <Link to="/pricing" className="pricing-link">
                       View Pricing
                     </Link>
                   </td>
@@ -64,14 +64,12 @@ export default function Leads() {
             </table>
           </div>
         </section>
-
       </div>
 
       {/* Add Lead popup */}
       {showAddLead && (
         <AddLeadForm onClose={() => setShowAddLead(false)} />
       )}
-
     </PageLayout>
   );
 }
