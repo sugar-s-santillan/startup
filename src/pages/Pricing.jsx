@@ -1,20 +1,12 @@
 import { Link } from 'react-router-dom';
 import futurePagePreview from '../../images/future-page.png';
 import Footer from '../components/Footer.jsx';
+import Navbar from '../components/Navbar.jsx';
 
 export default function Pricing() {
   return (
     <div className="min-h-screen flex flex-col">
-      <header className="dashboard-header">
-        <nav className="page-container flex justify-between items-center">
-          <Link to="/leads" className="brand">
-            Prometheus Mortgage
-          </Link>
-          <Link to="/leads" className="back-link">
-            ← Back to Leads
-          </Link>
-        </nav>
-      </header>
+      <Navbar showBackButton={true} />
 
       <main className="flex-1">
         <div className="page-container">

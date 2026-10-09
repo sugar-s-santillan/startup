@@ -1,23 +1,12 @@
 import { Link } from 'react-router-dom';
 import Footer from '../components/Footer.jsx';
+import Navbar from '../components/Navbar.jsx';
+
 
 export default function Leads() {
   return (
     <div className="min-h-screen flex flex-col">
-      <header className="dashboard-header">
-        <nav className="page-container flex justify-between items-center">
-          <Link to="/leads" className="brand">
-            Prometheus Mortgage
-          </Link>
-
-          <div className="flex items-center gap-6">
-            <span className="logged-in-user">Sugar Santillan</span>
-            <Link to="/" className="logout-link">
-              Log out
-            </Link>
-          </div>
-        </nav>
-      </header>
+      <Navbar />
 
       <main className="flex-1">
         <div className="page-container">
