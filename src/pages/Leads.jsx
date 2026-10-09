@@ -5,11 +5,29 @@ import PageLayout from '../components/PageLayout.jsx';
 import AddLeadForm from '../components/AddLeadForm.jsx';
 
 export default function Leads() {
+
   const [showAddLead, setShowAddLead] = useState(false);
+
+  const [leads, setLeads] = useState([
+    {
+      id: '1',
+      fullName: 'John Doe',
+      address: '123 Main Street',
+      creditScore: '720',
+      loanType: 'Purchase',
+      loanAmount: '250000',
+      dateAdded: 'September 23, 2026',
+    },
+  ]);
+
+  function handleAddLead(newLead) {
+    setLeads((previousLeads) => [...previousLeads, newLead]);
+  }
 
   return (
     <PageLayout>
       <div className="page-container">
+
         {/* Page heading */}
         <section className="dashboard-heading">
           <div>
@@ -25,6 +43,7 @@ export default function Leads() {
             + Add Lead
           </button>
         </section>
+
         {/* Leads table */}
         <section className="table-card">
           <div className="table-heading">
@@ -33,7 +52,7 @@ export default function Leads() {
           </div>
 
           <div className="table-wrapper">
-            <table className="leads-table">
+            <table>
               <thead>
                 <tr>
                   <th>Full Name</th>
@@ -46,30 +65,35 @@ export default function Leads() {
               </thead>
 
               <tbody>
-                <tr>
-                  <td className="borrower-name">John Doe</td>
-                  <td>123 Main Street</td>
-                  <td>720</td>
-                  <td>
-                    <span className="loan-type">Purchase</span>
-                  </td>
-                  <td>September 23, 2026</td>
-                  <td>
-                    <Link to="/pricing" className="pricing-link">
-                      View Pricing
-                    </Link>
-                  </td>
-                </tr>
+                {leads.map((lead) => (
+                  <tr key={lead.id}>
+                    <td>{lead.fullName}</td>
+                    <td>{lead.address}</td>
+                    <td>{lead.creditScore}</td>
+                    <td>{lead.loanType}</td>
+                    <td>{lead.dateAdded}</td>
+                    <td>
+                      <Link to="/pricing" className="table-link">
+                        View Pricing
+                      </Link>
+                    </td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>
         </section>
+
       </div>
 
       {/* Add Lead popup */}
       {showAddLead && (
-        <AddLeadForm onClose={() => setShowAddLead(false)} />
+        <AddLeadForm
+          onClose={() => setShowAddLead(false)}
+          onSave={handleAddLead}
+        />
       )}
+
     </PageLayout>
   );
 }
