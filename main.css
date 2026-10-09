@@ -965,3 +965,115 @@ button:disabled {
     }
 
 }
+/* ==========================================
+   ADD LEAD MODAL
+   ========================================== */
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+
+  background: rgba(0, 0, 0, 0.6);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 1rem;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: white;
+  color: #1f2937;
+
+  width: 100%;
+  max-width: 500px;
+  max-height: 90vh;
+
+  overflow-y: auto;
+
+  border-radius: 12px;
+  padding: 1.5rem;
+
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  margin-bottom: 1.5rem;
+}
+
+.modal-header h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.modal-close {
+  background: transparent;
+  border: none;
+
+  font-size: 1.25rem;
+  cursor: pointer;
+
+  color: #374151;
+}
+
+.modal-close:hover {
+  color: #ef4444;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+
+  margin-top: 1.5rem;
+}
+
+/* Modal form fields */
+
+.modal-content .form-group {
+  margin-bottom: 1rem;
+}
+
+.modal-content input,
+.modal-content select {
+  width: 100%;
+}
+
+.modal-content label {
+  display: block;
+  margin-bottom: 0.4rem;
+}
+
+/* Disabled save button */
+
+.modal-content button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Mobile responsiveness */
+
+@media (max-width: 600px) {
+  .modal-content {
+    padding: 1rem;
+  }
+
+  .modal-header h2 {
+    font-size: 1.25rem;
+  }
+
+  .modal-actions {
+    flex-direction: column;
+  }
+
+  .modal-actions button {
+    width: 100%;
+  }
+}

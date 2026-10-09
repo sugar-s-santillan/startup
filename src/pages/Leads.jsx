@@ -1,49 +1,61 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
+
 import PageLayout from '../components/PageLayout.jsx';
 import AddLeadForm from '../components/AddLeadForm.jsx';
 
-
 export default function Leads() {
+  const [showAddLead, setShowAddLead] = useState(false);
+
   return (
     <PageLayout>
       <div className="page-container">
+
+        {/* Page heading */}
         <section className="dashboard-heading">
           <div>
             <h1>Mortgage Pricer + Lender Matrix</h1>
             <p>Review your leads and access lender pricing.</p>
           </div>
+
+          <button
+            type="button"
+            className="primary-button"
+            onClick={() => setShowAddLead(true)}
+          >
+            + Add Lead
+          </button>
         </section>
-        <AddLeadForm />
+
+        {/* Leads table */}
         <section className="table-card">
           <div className="table-heading">
             <h2>Leads</h2>
-            <p>Leads stored in the application database</p>
+            <p>Borrowers currently in your pipeline.</p>
           </div>
 
           <div className="table-wrapper">
-            <table className="leads-table">
+            <table>
               <thead>
                 <tr>
                   <th>Full Name</th>
-                  <th>Address</th>
+                  <th>Property Address</th>
                   <th>Credit Score</th>
                   <th>Loan Type</th>
-                  <th>Date Entered</th>
+                  <th>Date Added</th>
                   <th>Pricing</th>
                 </tr>
               </thead>
 
               <tbody>
                 <tr>
-                  <td className="borrower-name">John Doe</td>
+                  <td>John Doe</td>
                   <td>123 Main Street</td>
                   <td>720</td>
-                  <td>
-                    <span className="loan-type">Purchase</span>
-                  </td>
+                  <td>Purchase</td>
                   <td>September 23, 2026</td>
                   <td>
-                    <Link to="/pricing" className="pricing-link">
+                    <Link to="/pricing" className="table-link">
                       View Pricing
                     </Link>
                   </td>
@@ -52,7 +64,14 @@ export default function Leads() {
             </table>
           </div>
         </section>
+
       </div>
+
+      {/* Add Lead popup */}
+      {showAddLead && (
+        <AddLeadForm onClose={() => setShowAddLead(false)} />
+      )}
+
     </PageLayout>
   );
 }
