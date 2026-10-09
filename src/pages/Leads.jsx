@@ -1,5 +1,7 @@
 import { Link } from 'react-router-dom';
 import PageLayout from '../components/PageLayout.jsx';
+import AddLeadForm from '../components/AddLeadForm.jsx';
+
 
 export default function Leads() {
   return (
@@ -11,7 +13,7 @@ export default function Leads() {
             <p>Review your leads and access lender pricing.</p>
           </div>
         </section>
-
+        <AddLeadForm />
         <section className="table-card">
           <div className="table-heading">
             <h2>Leads</h2>
