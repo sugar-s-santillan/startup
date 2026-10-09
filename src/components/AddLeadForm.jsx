@@ -1,32 +1,35 @@
-import { useEffect, useRef } from 'react';
 import FormInput from './FormInput.jsx';
 
-export default function AddLeadForm({ onClose }) {
-  const dialogRef = useRef(null);
+export default function AddLeadForm({ onClose, onSave }) {
 
-  useEffect(() => {
-    const dialog = dialogRef.current;
-    const previousOverflow = document.body.style.overflow;
-    dialog.showModal();
-    document.body.style.overflow = 'hidden';
+  function handleSubmit(event) {
+    event.preventDefault();
 
-    return () => {
-      dialog.close();
-      document.body.style.overflow = previousOverflow;
+    const formData = new FormData(event.currentTarget);
+
+    const newLead = {
+      id: crypto.randomUUID(),
+      fullName: formData.get('fullName'),
+      address: formData.get('address'),
+      creditScore: formData.get('creditScore'),
+      loanType: formData.get('loanType'),
+      loanAmount: formData.get('loanAmount'),
+      dateAdded: new Date().toLocaleDateString(),
     };
-  }, []);
+
+    onSave(newLead);
+    onClose();
+  }
 
   return (
-    <dialog
-      ref={dialogRef}
-      className="modal-overlay"
-      aria-labelledby="add-lead-title"
-      onCancel={onClose}
-      onClick={(event) => {
-        if (event.target === event.currentTarget) onClose();
-      }}
-    >
-      <div className="modal-content">
+    <div className="modal-overlay" onClick={onClose}>
+      <div
+        className="modal-content"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="add-lead-title"
+        onClick={(event) => event.stopPropagation()}
+      >
         <div className="modal-header">
           <h2 id="add-lead-title">Add New Lead</h2>
 
@@ -40,7 +43,7 @@ export default function AddLeadForm({ onClose }) {
           </button>
         </div>
 
-        <form onSubmit={(event) => event.preventDefault()}>
+        <form className="pricing-form" onSubmit={handleSubmit}>
           <FormInput
             label="Full Name"
             id="fullName"
@@ -86,12 +89,12 @@ export default function AddLeadForm({ onClose }) {
               Cancel
             </button>
 
-            <button type="button" className="primary-button" disabled>
+            <button type="submit" className="primary-button">
               Save Lead
             </button>
           </div>
         </form>
       </div>
-    </dialog>
+    </div>
   );
 }
