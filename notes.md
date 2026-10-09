@@ -47,4 +47,19 @@ Some CSS concepts I want to remember:
 
 ## React
 
-Interesting things I have learned about React
+React builds interactive user interfaces from reusable components. JSX lets a component describe the HTML-like structure it renders. Components can receive **props** from their parent and use **state** for data that changes over time; updating state causes React to render the updated interface.
+
+React Router connects URL paths to page components. In this application, `/` displays Login, `/leads` displays Leads, and `/pricing` displays Pricing. Router links navigate between these views without loading a separate HTML page.
+
+### Running the application locally
+
+After cloning the repository and opening its folder in a terminal, install the dependencies and start the development server:
+
+```sh
+npm install
+npm run dev
+```
+
+Vite serves the app locally and updates it during development. `npm run build` creates the production site in `dist/`, and `npm run preview` serves that build locally for checking.
+
+`node_modules/` contains installed dependencies and can be recreated with `npm install`; it should not be committed. `.gitignore` keeps it and other generated or local-only files out of Git. The generated `dist/` folder is also ignored and can be recreated by running the build.
