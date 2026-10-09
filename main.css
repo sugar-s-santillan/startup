@@ -403,51 +403,88 @@ footer p {
    Leads Table
    ========================= */
 
-.leads-table {
+.table-card table {
     width: 100%;
-
+    min-width: 960px;
     border-collapse: collapse;
+    text-align: left;
+    font-size: 0.9rem;
+    line-height: 1.5;
 }
 
-.leads-table th {
-    padding: 0.9rem 1.25rem;
+.table-card th,
+.table-card td {
+    padding: 1.25rem 1.5rem;
+    vertical-align: middle;
+    border-bottom: 1px solid #e2e8f0;
+}
 
+.table-card thead th {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
     background-color: #f8fafc;
-
     color: #475569;
-
     font-size: 0.75rem;
     font-weight: 700;
-
     text-align: left;
     text-transform: uppercase;
     letter-spacing: 0.05em;
-
-    border-bottom: 1px solid #e2e8f0;
+    white-space: nowrap;
 }
 
-.leads-table td {
-    padding: 1.1rem 1.25rem;
-
+.table-card td {
     color: #475569;
-
-    font-size: 0.9rem;
-
-    border-bottom: 1px solid #e2e8f0;
 }
 
-.leads-table tbody tr:hover {
+.table-card td:first-child {
+    color: #0f172a;
+    font-weight: 600;
+}
+
+/* Keep credit scores and their heading aligned. */
+.table-card th:nth-child(3),
+.table-card td:nth-child(3) {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+}
+
+.table-card th:last-child,
+.table-card td:last-child {
+    text-align: right;
+    white-space: nowrap;
+}
+
+.table-card td:nth-child(4),
+.table-card td:nth-child(5) {
+    white-space: nowrap;
+}
+
+.table-card tbody tr {
+    transition: background-color 0.15s ease;
+}
+
+.table-card tbody tr:hover,
+.table-card tbody tr:focus-within {
     background-color: #f8fafc;
 }
 
-.leads-table tbody tr:last-child td {
+.table-card tbody tr:last-child td {
     border-bottom: none;
 }
 
-.leads-table .borrower-name {
-    color: #0f172a;
-
+.table-card .table-link {
+    display: inline-block;
+    padding: 0.25rem 0;
+    color: #2563eb;
     font-weight: 600;
+    text-decoration: none;
+    text-underline-offset: 3px;
+}
+
+.table-card .table-link:hover,
+.table-card .table-link:focus-visible {
+    color: #1d4ed8;
+    text-decoration: underline;
 }
 
 
@@ -507,9 +544,10 @@ footer p {
         padding: 1.25rem;
     }
 
-    .leads-table th,
-    .leads-table td {
-        white-space: nowrap;
+    .table-card th,
+    .table-card td {
+        padding-left: 1.25rem;
+        padding-right: 1.25rem;
     }
 
 }
