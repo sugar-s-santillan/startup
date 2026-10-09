@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import Footer from '../components/Footer.jsx';
+import FormInput from '../components/FormInput.jsx';
 
 export default function Login() {
   const navigate = useNavigate();
@@ -25,28 +26,19 @@ export default function Login() {
           </div>
 
           <form onSubmit={handleSubmit}>
-            <div className="form-group">
-              <label htmlFor="username">Username</label>
-              <input
-                type="text"
-                id="username"
-                name="username"
-                placeholder="Enter your username"
-                required
-              />
-            </div>
-
-            <div className="form-group">
-              <label htmlFor="password">Password</label>
-              <input
-                type="password"
-                id="password"
-                name="password"
-                placeholder="Enter your password"
-                required
-              />
-            </div>
-
+            <FormInput
+              label="Username"
+              id="username"
+              placeholder="Enter your username"
+              required
+            />
+            <FormInput
+              label="Password"
+              id="password"
+              type="password"
+              placeholder="Enter your password"
+              required
+            />
             <div className="button-group">
               <button type="submit" className="primary-button">
                 Log in
