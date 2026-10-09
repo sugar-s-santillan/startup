@@ -1,5 +1,6 @@
 import futurePagePreview from '../../images/future-page.png';
-import PageLayout from '../components/PageLayout.jsx'
+import PageLayout from '../components/PageLayout.jsx';
+import FormInput from '../components/FormInput.jsx';
 
 export default function Pricing() {
   return (
@@ -88,25 +89,19 @@ export default function Pricing() {
                   </div>
                 </fieldset>
 
-                <div className="form-group">
-                  <label htmlFor="propertyValue">Property Value</label>
-                  <input
-                    type="number"
-                    id="propertyValue"
-                    name="propertyValue"
-                    placeholder="$250,000"
-                  />
-                </div>
+                <FormInput
+                  label="Property Value"
+                  id="propertyValue"
+                  type="number"
+                  placeholder="$250,000"
+                />
 
-                <div className="form-group">
-                  <label htmlFor="loanAmount">Loan Amount</label>
-                  <input
-                    type="number"
-                    id="loanAmount"
-                    name="loanAmount"
-                    placeholder="$200,000"
-                  />
-                </div>
+                <FormInput
+                  label="Loan Amount"
+                  id="loanAmount"
+                  type="number"
+                  placeholder="$200,000"
+                />
 
                 <div className="form-group">
                   <label htmlFor="refinanceType">Refinance Type</label>
@@ -116,15 +111,12 @@ export default function Pricing() {
                   </select>
                 </div>
 
-                <div className="form-group">
-                  <label htmlFor="creditScore">Borrower Credit Score</label>
-                  <input
-                    type="number"
-                    id="creditScore"
-                    name="creditScore"
-                    placeholder="720"
-                  />
-                </div>
+                <FormInput
+                  label="Borrower Credit Score"
+                  id="creditScore"
+                  type="number"
+                  placeholder="720"
+                />
 
                 <button type="button" className="primary-button" disabled>
                   Price Loan (Coming Soon)
