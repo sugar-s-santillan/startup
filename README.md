@@ -120,10 +120,13 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
-- [ ] I completed the prerequisites for this deliverable (Simon deployed, GitHub link, Git commits)
-- [ ] **Bundled using Vite** - I did complete this part of the deliverable.
-- [ ] **Components** - I did complete this part of the deliverable.
-- [ ] **Router** - I did complete this part of the deliverable.
+- [x] I completed the prerequisites for this deliverable (Simon deployed, GitHub link, Git commits)
+
+- [x] **Bundled using Vite** - I converted my existing HTML application into a React application using Vite. I configured the project to use React and installed the necessary dependencies. Vite is now used to run the development server and build the application for production.
+
+- [x] **Components** - I separated my application into reusable React components. I created individual components for the Login, Leads, and Pricing pages, along with shared components such as Navbar, Footer, PageLayout, and FormInput. I also created an AddLeadForm component that opens a popup where users can enter borrower information. I implemented temporary lead creation using React state, allowing new leads to appear in the table without a database.
+
+- [x] **Router** - I implemented React Router to navigate between the different pages of my application. The Login page is located at `/`, the Leads page at `/leads`, and the Pricing page at `/pricing`. Navigation now happens within the React application instead of loading separate HTML files.
 
 ## 🚀 React part 2: Reactivity deliverable
 
