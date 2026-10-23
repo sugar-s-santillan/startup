@@ -1,6 +1,14 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 export default function Navbar({ showBackButton = false }) {
+  const navigate = useNavigate();
+  const username = localStorage.getItem('username') || 'Guest';
+
+  function handleLogout() {
+    localStorage.removeItem('username');
+    navigate('/');
+  }
+
   return (
     <header className="dashboard-header">
       <nav className="page-container navbar-content">
@@ -9,19 +17,23 @@ export default function Navbar({ showBackButton = false }) {
         </Link>
 
         <div className="navbar-actions">
-          {showBackButton ? (
+          {showBackButton && (
             <Link to="/leads" className="back-link">
               ← Back to Leads
             </Link>
-          ) : (
-            <>
-              <span className="logged-in-user">Sugar Santillan</span>
-
-              <Link to="/" className="logout-link">
-                Log out
-              </Link>
-            </>
           )}
+
+          <span className="logged-in-user">
+            {username}
+          </span>
+
+          <button
+            type="button"
+            className="logout-link"
+            onClick={handleLogout}
+          >
+            Log out
+          </button>
         </div>
       </nav>
     </header>
