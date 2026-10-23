@@ -1,8 +1,20 @@
+import { useState } from 'react';
 import futurePagePreview from '../../images/future-page.png';
 import PageLayout from '../components/PageLayout.jsx';
 import FormInput from '../components/FormInput.jsx';
 
 export default function Pricing() {
+  const [loanType, setLoanType] = useState('purchase');
+  const [propertyValue, setPropertyValue] = useState('');
+  const [loanAmount, setLoanAmount] = useState('');
+  const [creditScore, setCreditScore] = useState('');
+  const [refinanceType, setRefinanceType] = useState('cashOut');
+
+  const ltv =
+    Number(propertyValue) > 0
+      ? (Number(loanAmount) / Number(propertyValue)) * 100
+      : 0;
+
   return (
     <PageLayout showBackButton>
       <div className="page-container">
@@ -63,9 +75,13 @@ export default function Pricing() {
               <p>Enter loan parameters to determine lender eligibility.</p>
             </div>
 
-            <form className="pricing-form">
+            <form
+              className="pricing-form"
+              onSubmit={(event) => event.preventDefault()}
+            >
               <fieldset className="loan-type-fieldset">
                 <legend>Loan Type</legend>
+
                 <div className="radio-options">
                   <label className="radio-option">
                     <input
@@ -73,16 +89,20 @@ export default function Pricing() {
                       id="purchase"
                       name="loanType"
                       value="purchase"
-                      defaultChecked
+                      checked={loanType === 'purchase'}
+                      onChange={() => setLoanType('purchase')}
                     />
                     <span className="radio-card">Purchase</span>
                   </label>
+
                   <label className="radio-option">
                     <input
                       type="radio"
                       id="refinance"
                       name="loanType"
                       value="refinance"
+                      checked={loanType === 'refinance'}
+                      onChange={() => setLoanType('refinance')}
                     />
                     <span className="radio-card">Refinance</span>
                   </label>
@@ -94,6 +114,8 @@ export default function Pricing() {
                 id="propertyValue"
                 type="number"
                 placeholder="$250,000"
+                value={propertyValue}
+                onChange={(event) => setPropertyValue(event.target.value)}
               />
 
               <FormInput
@@ -101,26 +123,44 @@ export default function Pricing() {
                 id="loanAmount"
                 type="number"
                 placeholder="$200,000"
+                value={loanAmount}
+                onChange={(event) => setLoanAmount(event.target.value)}
               />
 
-              <div className="form-group">
-                <label htmlFor="refinanceType">Refinance Type</label>
-                <select id="refinanceType" name="refinanceType">
-                  <option value="cashOut">Cash-Out</option>
-                  <option value="rateTerm">Rate and Term</option>
-                </select>
-              </div>
+              {loanType === 'refinance' && (
+                <div className="form-group">
+                  <label htmlFor="refinanceType">Refinance Type</label>
+                  <select
+                    id="refinanceType"
+                    name="refinanceType"
+                    value={refinanceType}
+                    onChange={(event) =>
+                      setRefinanceType(event.target.value)
+                    }
+                  >
+                    <option value="cashOut">Cash-Out</option>
+                    <option value="rateTerm">Rate and Term</option>
+                  </select>
+                </div>
+              )}
 
               <FormInput
                 label="Borrower Credit Score"
                 id="creditScore"
                 type="number"
                 placeholder="720"
+                value={creditScore}
+                onChange={(event) => setCreditScore(event.target.value)}
               />
 
-              <button type="button" className="primary-button" disabled>
-                Price Loan (Coming Soon)
-              </button>
+              <div className="detail-item">
+                <span>Loan-to-Value (LTV)</span>
+                <strong>
+                  {Number(propertyValue) > 0 && Number(loanAmount) > 0
+                    ? `${ltv.toFixed(2)}%`
+                    : 'Enter loan details'}
+                </strong>
+              </div>
             </form>
           </section>
         </div>
@@ -130,6 +170,7 @@ export default function Pricing() {
             <h2>Future Application</h2>
             <p>Planned design for the completed mortgage pricing platform.</p>
           </div>
+
           <img
             src={futurePagePreview}
             alt="Planned mortgage pricing page"
@@ -148,6 +189,7 @@ export default function Pricing() {
               <span className="status-dot" />
               Third-party property valuation and pricing data will appear here.
             </div>
+
             <div className="status-item">
               <span className="status-dot" />
               Real-time lender guideline updates received through WebSocket
@@ -164,27 +206,32 @@ export default function Pricing() {
                   <th>BPL</th>
                 </tr>
               </thead>
+
               <tbody>
                 <tr>
                   <th>Product</th>
                   <td>DSCR 30-Year Fixed</td>
                   <td>Bridge Loan</td>
                 </tr>
+
                 <tr>
                   <th>Minimum Credit Score</th>
                   <td>660</td>
                   <td>620</td>
                 </tr>
+
                 <tr>
                   <th>Minimum Loan Amount</th>
                   <td>$75,000</td>
                   <td>$100,000</td>
                 </tr>
+
                 <tr>
                   <th>Minimum Property Value</th>
                   <td>$100,000</td>
                   <td>$150,000</td>
                 </tr>
+
                 <tr>
                   <th>Late Payments</th>
                   <td>None in 12 months</td>
