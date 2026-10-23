@@ -18,6 +18,7 @@ export default function Login() {
     }
 
     setError('');
+    localStorage.setItem('username', username.trim());
     navigate('/leads');
   }
 
