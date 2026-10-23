@@ -7,6 +7,7 @@ import AddLeadForm from '../components/AddLeadForm.jsx';
 export default function Leads() {
 
   const [showAddLead, setShowAddLead] = useState(false);
+  const [search, setSearch] = useState('');
 
   const [leads, setLeads] = useState(() => {
   const savedLeads = localStorage.getItem('leads');
@@ -29,6 +30,15 @@ export default function Leads() {
   useEffect(() => {
     localStorage.setItem('leads', JSON.stringify(leads));
   }, [leads]);
+
+  const filteredLeads = leads.filter((lead) => {
+  const searchText = search.toLowerCase();
+
+  return (
+    lead.fullName.toLowerCase().includes(searchText) ||
+    lead.address.toLowerCase().includes(searchText)
+  );
+  });
 
   function handleAddLead(newLead) {
     setLeads((previousLeads) => [...previousLeads, newLead]);
@@ -56,9 +66,14 @@ export default function Leads() {
 
         {/* Leads table */}
         <section className="table-card">
-          <div className="table-heading">
-            <h2>Leads</h2>
-            <p>Borrowers currently in your pipeline.</p>
+          <div className="form-group">
+            <input
+              type="text"
+              placeholder="Search by name or property address..."
+              value={search}
+              onChange={(event) => setSearch(event.target.value)}
+              aria-label="Search leads"
+            />
           </div>
 
           <div className="table-wrapper">
@@ -75,7 +90,7 @@ export default function Leads() {
               </thead>
 
               <tbody>
-                {leads.map((lead) => (
+                {filteredLeads.map((lead) => (
                   <tr key={lead.id}>
                     <td>{lead.fullName}</td>
                     <td>{lead.address}</td>
