@@ -142,3 +142,14 @@ I learned that reusable components can simplify the structure of an application,
 I also learned how to use `npm run build` to check whether the React application can be compiled for production.
 
 I used AI tools to help create components, troubleshoot errors, and improve the CSS. I reviewed the changes and tested the application as I worked through the deliverable.
+
+## Simon React Phase 2: Reactivity
+
+- React useState manages data that changes in a component.
+- React useEffect runs code after rendering and can clean up event listeners.
+- Props allow parent components to pass data and functions to children.
+- React re-renders components when their state changes.
+- localStorage saves data, such as Simon scores, between browser sessions.
+- The Simon game uses state to track button sequences and player progress.
+- Vite builds React applications into production files.
+- Deployed Simon React to AWS using deployReact.sh.
