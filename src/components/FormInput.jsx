@@ -1,9 +1,12 @@
+
 export default function FormInput({
   label,
   id,
   type = 'text',
   placeholder = '',
   required = false,
+  value,
+  onChange,
 }) {
   return (
     <div className="form-group">
@@ -15,6 +18,8 @@ export default function FormInput({
         name={id}
         placeholder={placeholder}
         required={required}
+        value={value}
+        onChange={onChange}
       />
     </div>
   );
