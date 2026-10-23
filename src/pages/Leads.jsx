@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 import PageLayout from '../components/PageLayout.jsx';
@@ -8,17 +8,27 @@ export default function Leads() {
 
   const [showAddLead, setShowAddLead] = useState(false);
 
-  const [leads, setLeads] = useState([
-    {
-      id: '1',
-      fullName: 'John Doe',
-      address: '123 Main Street',
-      creditScore: '720',
-      loanType: 'Purchase',
-      loanAmount: '250000',
-      dateAdded: 'September 23, 2026',
-    },
-  ]);
+  const [leads, setLeads] = useState(() => {
+  const savedLeads = localStorage.getItem('leads');
+
+  return savedLeads
+    ? JSON.parse(savedLeads)
+    : [
+        {
+          id: '1',
+          fullName: 'John Doe',
+          address: '123 Main Street',
+          creditScore: '720',
+          loanType: 'Purchase',
+          loanAmount: '250000',
+          dateAdded: 'September 23, 2026',
+        },
+      ];
+  });
+
+  useEffect(() => {
+    localStorage.setItem('leads', JSON.stringify(leads));
+  }, [leads]);
 
   function handleAddLead(newLead) {
     setLeads((previousLeads) => [...previousLeads, newLead]);
