@@ -204,19 +204,6 @@ export default function Pricing() {
           </section>
         </div>
 
-        <section className="content-card preview-card">
-          <div className="card-heading">
-            <h2>Future Application</h2>
-            <p>Planned design for the completed mortgage pricing platform.</p>
-          </div>
-
-          <img
-            src={futurePagePreview}
-            alt="Planned mortgage pricing page"
-            className="future-page-image"
-          />
-        </section>
-
         <section className="content-card lender-section">
           <div className="card-heading">
             <h2>Eligible Lenders</h2>
