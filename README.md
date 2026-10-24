@@ -128,13 +128,17 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 
 - [x] **Router** - I implemented React Router to navigate between the different pages of my application. The Login page is located at `/`, the Leads page at `/leads`, and the Pricing page at `/pricing`. Navigation now happens within the React application instead of loading separate HTML files.
 
+
 ## 🚀 React part 2: Reactivity deliverable
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
-- [ ] I completed the prerequisites for this deliverable (Simon deployed, GitHub link, Git commits)
-- [ ] **All functionality implemented or mocked out** - I did complete this part of the deliverable.
-- [ ] **Hooks** - I did complete this part of the deliverable.
+- [x] I completed the prerequisites for this deliverable (Simon deployed, GitHub link, Git commits).
+
+- [x] **All functionality implemented or mocked out** - I implemented a functional mock login system that stores the username in localStorage, supports logout, and restricts access to application pages. Users can add mortgage leads, search through existing leads, and retain their lead information after refreshing the page. I also created an interactive underwriting guideline matrix that automatically evaluates lender eligibility based on property value, loan amount, credit score, LTV, loan purpose, loan product, and property type. The application identifies eligible and ineligible lenders and explains which requirements were not met. The lender guidelines are currently mocked and will be replaced with actual lender data in future deliverables.
+
+- [x] **Hooks** - I used React's `useState` hook to manage login information, borrower leads, search inputs, and loan scenario details. I used `useEffect` to automatically save leads to localStorage whenever they change. I also implemented conditional rendering and array methods such as `map` and `filter` to dynamically update the interface without refreshing the page.
+
 
 ## 🚀 Service deliverable
 

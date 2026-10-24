@@ -153,3 +153,13 @@ I used AI tools to help create components, troubleshoot errors, and improve the 
 - The Simon game uses state to track button sequences and player progress.
 - Vite builds React applications into production files.
 - Deployed Simon React to AWS using deployReact.sh.
+
+
+
+## React Reactivity
+
+I learned how to use React's useState hook to store and update data in components. When state changes, React automatically updates the interface.
+I used useEffect to save lead information to localStorage. This allows leads to remain available after refreshing the page.
+I also learned how to use conditional rendering and JavaScript array methods such as map and filter to build an interactive lender eligibility matrix.
+One important concept I learned is that calculated values, such as LTV and lender eligibility, do not need separate state variables. React can calculate them directly from existing state whenever the component renders.
+

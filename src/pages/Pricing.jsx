@@ -392,16 +392,6 @@ export default function Pricing() {
             )}
           </div>
 
-          <div className="future-results">
-            <p>
-              Demonstration only. Eligibility is based on fictional
-              guidelines and does not represent lender approval.
-            </p>
-            <p>
-              Future integrations may provide actual lender
-              guidelines and live eligibility updates.
-            </p>
-          </div>
         </section>
 
       </div>
