@@ -3,6 +3,28 @@ import futurePagePreview from '../../images/future-page.png';
 import PageLayout from '../components/PageLayout.jsx';
 import FormInput from '../components/FormInput.jsx';
 
+
+const lenders = [
+  {
+    name: 'OCMBC',
+    product: 'DSCR 30-Year Fixed',
+    minCreditScore: 660,
+    minLoanAmount: 75000,
+    minPropertyValue: 100000,
+    maxLtv: 80,
+    latePayments: 'None in 12 months',
+  },
+  {
+    name: 'BPL',
+    product: 'Bridge Loan',
+    minCreditScore: 620,
+    minLoanAmount: 100000,
+    minPropertyValue: 150000,
+    maxLtv: 75,
+    latePayments: 'One allowed',
+  },
+];
+
 export default function Pricing() {
   const [loanType, setLoanType] = useState('purchase');
   const [propertyValue, setPropertyValue] = useState('');
@@ -14,6 +36,23 @@ export default function Pricing() {
     Number(propertyValue) > 0
       ? (Number(loanAmount) / Number(propertyValue)) * 100
       : 0;
+
+  const hasValidLoan =
+    Number(propertyValue) > 0 &&
+    Number(loanAmount) > 0 &&
+    Number(creditScore) >= 300 &&
+    Number(creditScore) <= 850;
+
+  const eligibleLenders = hasValidLoan
+    ? lenders.filter((lender) => {
+        return (
+          Number(creditScore) >= lender.minCreditScore &&
+          Number(loanAmount) >= lender.minLoanAmount &&
+          Number(propertyValue) >= lender.minPropertyValue &&
+          ltv <= lender.maxLtv
+        );
+      })
+    : [];
 
   return (
     <PageLayout showBackButton>
@@ -181,7 +220,10 @@ export default function Pricing() {
         <section className="content-card lender-section">
           <div className="card-heading">
             <h2>Eligible Lenders</h2>
-            <p>Compare lender guidelines for the current loan scenario.</p>
+            <p>
+              Automatically filtered using mock credit score, loan amount,
+              property value, and LTV requirements.
+            </p>
           </div>
 
           <div className="integration-status">
@@ -198,47 +240,35 @@ export default function Pricing() {
           </div>
 
           <div className="table-wrapper">
-            <table className="lender-table">
-              <thead>
-                <tr>
-                  <th>Guideline</th>
-                  <th>OCMBC</th>
-                  <th>BPL</th>
-                </tr>
-              </thead>
+            {!hasValidLoan ? (
+              <p>Enter valid loan details to see eligible lenders.</p>
+            ) : eligibleLenders.length === 0 ? (
+              <p>No lenders currently qualify for this loan scenario.</p>
+            ) : (
+              <table className="lender-table">
+                <thead>
+                  <tr>
+                    <th>Lender</th>
+                    <th>Product</th>
+                    <th>Minimum Credit Score</th>
+                    <th>Maximum LTV</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
 
-              <tbody>
-                <tr>
-                  <th>Product</th>
-                  <td>DSCR 30-Year Fixed</td>
-                  <td>Bridge Loan</td>
-                </tr>
-
-                <tr>
-                  <th>Minimum Credit Score</th>
-                  <td>660</td>
-                  <td>620</td>
-                </tr>
-
-                <tr>
-                  <th>Minimum Loan Amount</th>
-                  <td>$75,000</td>
-                  <td>$100,000</td>
-                </tr>
-
-                <tr>
-                  <th>Minimum Property Value</th>
-                  <td>$100,000</td>
-                  <td>$150,000</td>
-                </tr>
-
-                <tr>
-                  <th>Late Payments</th>
-                  <td>None in 12 months</td>
-                  <td>One allowed</td>
-                </tr>
-              </tbody>
-            </table>
+                <tbody>
+                  {eligibleLenders.map((lender) => (
+                    <tr key={lender.name}>
+                      <td>{lender.name}</td>
+                      <td>{lender.product}</td>
+                      <td>{lender.minCreditScore}</td>
+                      <td>{lender.maxLtv}%</td>
+                      <td>Eligible</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
           </div>
 
           <div className="future-results">
