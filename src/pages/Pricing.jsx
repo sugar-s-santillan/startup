@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import futurePagePreview from '../../images/future-page.png';
 import PageLayout from '../components/PageLayout.jsx';
 import FormInput from '../components/FormInput.jsx';
 
@@ -12,7 +11,9 @@ const lenders = [
     minLoanAmount: 75000,
     minPropertyValue: 100000,
     maxLtv: 80,
-    latePayments: 'None in 12 months',
+    loanProducts: ['dscr'],
+    propertyTypes: ['singleFamily', 'twoToFour', 'condo'],
+    loanPurposes: ['purchase', 'rateTerm', 'cashOut'],
   },
   {
     name: 'BPL',
@@ -21,51 +22,106 @@ const lenders = [
     minLoanAmount: 100000,
     minPropertyValue: 150000,
     maxLtv: 75,
-    latePayments: 'One allowed',
+    loanProducts: ['bridge'],
+    propertyTypes: ['singleFamily', 'twoToFour'],
+    loanPurposes: ['purchase', 'cashOut'],
   },
 ];
 
 export default function Pricing() {
+  const [loanProduct, setLoanProduct] = useState('dscr');
+  const [propertyType, setPropertyType] = useState('singleFamily');
   const [loanType, setLoanType] = useState('purchase');
   const [propertyValue, setPropertyValue] = useState('');
   const [loanAmount, setLoanAmount] = useState('');
   const [creditScore, setCreditScore] = useState('');
   const [refinanceType, setRefinanceType] = useState('cashOut');
 
+  // Automatically calculate loan-to-value.
   const ltv =
     Number(propertyValue) > 0
       ? (Number(loanAmount) / Number(propertyValue)) * 100
       : 0;
 
+  // Require valid loan inputs before evaluating lenders.
   const hasValidLoan =
     Number(propertyValue) > 0 &&
     Number(loanAmount) > 0 &&
     Number(creditScore) >= 300 &&
     Number(creditScore) <= 850;
 
-  const eligibleLenders = hasValidLoan
-    ? lenders.filter((lender) => {
-        return (
-          Number(creditScore) >= lender.minCreditScore &&
-          Number(loanAmount) >= lender.minLoanAmount &&
-          Number(propertyValue) >= lender.minPropertyValue &&
-          ltv <= lender.maxLtv
-        );
+  // Evaluate every lender and explain any failed requirements.
+  const lenderResults = hasValidLoan
+    ? lenders.map((lender) => {
+        const reasons = [];
+
+        if (Number(creditScore) < lender.minCreditScore) {
+          reasons.push(
+            `Minimum credit score: ${lender.minCreditScore}`
+          );
+        }
+
+        if (Number(loanAmount) < lender.minLoanAmount) {
+          reasons.push(
+            `Minimum loan amount: $${lender.minLoanAmount.toLocaleString()}`
+          );
+        }
+
+        if (Number(propertyValue) < lender.minPropertyValue) {
+          reasons.push(
+            `Minimum property value: $${lender.minPropertyValue.toLocaleString()}`
+          );
+        }
+
+        if (ltv > lender.maxLtv) {
+          reasons.push(`Maximum LTV: ${lender.maxLtv}%`);
+        }
+
+        if (!lender.loanProducts.includes(loanProduct)) {
+          reasons.push('Loan product not supported');
+        }
+
+        if (!lender.propertyTypes.includes(propertyType)) {
+          reasons.push('Property type not supported');
+        }
+
+        const purpose =
+          loanType === 'purchase' ? 'purchase' : refinanceType;
+
+        if (!lender.loanPurposes.includes(purpose)) {
+          reasons.push('Loan purpose not supported');
+        }
+
+        return {
+          ...lender,
+          eligible: reasons.length === 0,
+          reasons,
+        };
       })
     : [];
+
+  const eligibleCount = lenderResults.filter(
+    (lender) => lender.eligible
+  ).length;
 
   return (
     <PageLayout showBackButton>
       <div className="page-container">
+
+        {/* Page heading */}
         <section className="pricing-heading">
           <div>
             <p className="page-label">Loan Pricing</p>
             <h1>John Doe</h1>
-            <p>Review borrower information and compare eligible lenders.</p>
+            <p>
+              Review borrower information and compare lender eligibility.
+            </p>
           </div>
         </section>
 
         <div className="pricing-grid">
+
+          {/* Borrower information */}
           <section className="content-card">
             <div className="card-heading">
               <h2>Loan Details</h2>
@@ -77,30 +133,37 @@ export default function Pricing() {
                 <span>Loan Officer</span>
                 <strong>Leo</strong>
               </div>
+
               <div className="detail-item">
                 <span>Full Name</span>
                 <strong>John Doe</strong>
               </div>
+
               <div className="detail-item">
                 <span>Email</span>
                 <strong>john.doe@email.com</strong>
               </div>
+
               <div className="detail-item">
                 <span>Phone</span>
                 <strong>(512) 555-5555</strong>
               </div>
+
               <div className="detail-item">
                 <span>Address</span>
                 <strong>2855 Ridgemont Drive</strong>
               </div>
+
               <div className="detail-item">
                 <span>City</span>
                 <strong>Austin</strong>
               </div>
+
               <div className="detail-item">
                 <span>State</span>
                 <strong>Texas</strong>
               </div>
+
               <div className="detail-item">
                 <span>ZIP</span>
                 <strong>78704</strong>
@@ -108,10 +171,13 @@ export default function Pricing() {
             </div>
           </section>
 
+          {/* Reactive loan inputs */}
           <section className="content-card">
             <div className="card-heading">
-              <h2>Pricing</h2>
-              <p>Enter loan parameters to determine lender eligibility.</p>
+              <h2>Loan Scenario</h2>
+              <p>
+                Change the loan details to automatically update eligibility.
+              </p>
             </div>
 
             <form
@@ -152,23 +218,30 @@ export default function Pricing() {
                 label="Property Value"
                 id="propertyValue"
                 type="number"
-                placeholder="$250,000"
+                placeholder="250000"
                 value={propertyValue}
-                onChange={(event) => setPropertyValue(event.target.value)}
+                onChange={(event) =>
+                  setPropertyValue(event.target.value)
+                }
               />
 
               <FormInput
                 label="Loan Amount"
                 id="loanAmount"
                 type="number"
-                placeholder="$200,000"
+                placeholder="200000"
                 value={loanAmount}
-                onChange={(event) => setLoanAmount(event.target.value)}
+                onChange={(event) =>
+                  setLoanAmount(event.target.value)
+                }
               />
 
               {loanType === 'refinance' && (
                 <div className="form-group">
-                  <label htmlFor="refinanceType">Refinance Type</label>
+                  <label htmlFor="refinanceType">
+                    Refinance Type
+                  </label>
+
                   <select
                     id="refinanceType"
                     name="refinanceType"
@@ -183,19 +256,69 @@ export default function Pricing() {
                 </div>
               )}
 
+              <div className="form-group">
+                <label htmlFor="loanProduct">
+                  Loan Product
+                </label>
+
+                <select
+                  id="loanProduct"
+                  name="loanProduct"
+                  value={loanProduct}
+                  onChange={(event) =>
+                    setLoanProduct(event.target.value)
+                  }
+                >
+                  <option value="dscr">
+                    DSCR 30-Year Fixed
+                  </option>
+                  <option value="bridge">
+                    Bridge Loan
+                  </option>
+                </select>
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="propertyType">
+                  Property Type
+                </label>
+
+                <select
+                  id="propertyType"
+                  name="propertyType"
+                  value={propertyType}
+                  onChange={(event) =>
+                    setPropertyType(event.target.value)
+                  }
+                >
+                  <option value="singleFamily">
+                    Single-Family Residence
+                  </option>
+                  <option value="twoToFour">
+                    2–4 Unit Property
+                  </option>
+                  <option value="condo">
+                    Condominium
+                  </option>
+                </select>
+              </div>
+
               <FormInput
                 label="Borrower Credit Score"
                 id="creditScore"
                 type="number"
                 placeholder="720"
                 value={creditScore}
-                onChange={(event) => setCreditScore(event.target.value)}
+                onChange={(event) =>
+                  setCreditScore(event.target.value)
+                }
               />
 
               <div className="detail-item">
                 <span>Loan-to-Value (LTV)</span>
                 <strong>
-                  {Number(propertyValue) > 0 && Number(loanAmount) > 0
+                  {Number(propertyValue) > 0 &&
+                  Number(loanAmount) > 0
                     ? `${ltv.toFixed(2)}%`
                     : 'Enter loan details'}
                 </strong>
@@ -204,53 +327,64 @@ export default function Pricing() {
           </section>
         </div>
 
+        {/* Automatic lender eligibility results */}
         <section className="content-card lender-section">
           <div className="card-heading">
-            <h2>Eligible Lenders</h2>
+            <h2>Lender Eligibility Matrix</h2>
             <p>
-              Automatically filtered using mock credit score, loan amount,
-              property value, and LTV requirements.
+              Results update automatically using mock lender guidelines.
             </p>
           </div>
 
-          <div className="integration-status">
-            <div className="status-item">
-              <span className="status-dot" />
-              Third-party property valuation and pricing data will appear here.
+          {hasValidLoan && (
+            <div className="detail-item">
+              <span>Eligible Lenders</span>
+              <strong>
+                {eligibleCount} of {lenders.length}
+              </strong>
             </div>
-
-            <div className="status-item">
-              <span className="status-dot" />
-              Real-time lender guideline updates received through WebSocket
-              will appear here.
-            </div>
-          </div>
+          )}
 
           <div className="table-wrapper">
             {!hasValidLoan ? (
-              <p>Enter valid loan details to see eligible lenders.</p>
-            ) : eligibleLenders.length === 0 ? (
-              <p>No lenders currently qualify for this loan scenario.</p>
+              <p>
+                Enter a valid property value, loan amount, and
+                credit score to evaluate lenders.
+              </p>
             ) : (
               <table className="lender-table">
                 <thead>
                   <tr>
                     <th>Lender</th>
                     <th>Product</th>
-                    <th>Minimum Credit Score</th>
+                    <th>Minimum FICO</th>
                     <th>Maximum LTV</th>
-                    <th>Status</th>
+                    <th>Eligibility</th>
+                    <th>Reason</th>
                   </tr>
                 </thead>
 
                 <tbody>
-                  {eligibleLenders.map((lender) => (
+                  {lenderResults.map((lender) => (
                     <tr key={lender.name}>
                       <td>{lender.name}</td>
                       <td>{lender.product}</td>
                       <td>{lender.minCreditScore}</td>
                       <td>{lender.maxLtv}%</td>
-                      <td>Eligible</td>
+
+                      <td>
+                        <strong>
+                          {lender.eligible
+                            ? 'Eligible'
+                            : 'Ineligible'}
+                        </strong>
+                      </td>
+
+                      <td>
+                        {lender.eligible
+                          ? 'All mock requirements met'
+                          : lender.reasons.join('; ')}
+                      </td>
                     </tr>
                   ))}
                 </tbody>
@@ -259,10 +393,17 @@ export default function Pricing() {
           </div>
 
           <div className="future-results">
-            <p>Third-party pricing results will appear here.</p>
-            <p>Live lender guideline updates will appear here.</p>
+            <p>
+              Demonstration only. Eligibility is based on fictional
+              guidelines and does not represent lender approval.
+            </p>
+            <p>
+              Future integrations may provide actual lender
+              guidelines and live eligibility updates.
+            </p>
           </div>
         </section>
+
       </div>
     </PageLayout>
   );
