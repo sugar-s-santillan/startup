@@ -175,3 +175,4 @@ I connected React to the backend using fetch() and
 integrated a third-party quote API.
 Users and leads are temporarily stored in memory.
 Persistent storage will be added in Startup DB.
+

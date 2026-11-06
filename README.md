@@ -144,14 +144,14 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
-- [ ] I completed the prerequisites for this deliverable (Simon deployed, GitHub link, Git commits)
-- [ ] **Node.js/Express HTTP service** - I did complete this part of the deliverable.
-- [ ] **Static middleware for frontend** - I did complete this part of the deliverable.
-- [ ] **Calls to third party endpoints** - I did complete this part of the deliverable.
-- [ ] **Backend service endpoints** - I did complete this part of the deliverable.
-- [ ] **Frontend calls service endpoints** - I did complete this part of the deliverable.
-- [ ] **Supports registration, login, logout, and restricted endpoint** - I did complete this part of the deliverable.
-- [ ] **Uses BCrypt to hash passwords** - I did complete this part of the deliverable.
+- [x] I completed the prerequisites for this deliverable (Simon deployed, GitHub link, Git commits)
+- [x] **Node.js/Express HTTP service** - I did complete this part of the deliverable.
+- [x] **Static middleware for frontend** - I did complete this part of the deliverable.
+- [x] **Calls to third party endpoints** - I did complete this part of the deliverable.
+- [x] **Backend service endpoints** - I did complete this part of the deliverable.
+- [x] **Frontend calls service endpoints** - I did complete this part of the deliverable.
+- [x] **Supports registration, login, logout, and restricted endpoint** - I did complete this part of the deliverable.
+- [x] **Uses BCrypt to hash passwords** - I did complete this part of the deliverable.
 
 ## 🚀 DB deliverable
 
@@ -171,3 +171,31 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 - [ ] **Data sent over WebSocket connection** - I did complete this part of the deliverable.
 - [ ] **WebSocket data displayed** - I did complete this part of the deliverable.
 - [ ] **Application is fully functional** - I did complete this part of the deliverable.
+
+
+
+
+
+
+### API endpoints
+
+| Method | Endpoint | Purpose |
+| --- | --- | --- |
+| GET | `/api/health` | Check backend status |
+| GET | `/api/products` | Retrieve loan products |
+| POST | `/api/auth/create` | Register a user |
+| POST | `/api/auth/login` | Authenticate a user |
+| DELETE | `/api/auth/logout` | Log out |
+| GET | `/api/auth/me` | Retrieve authenticated user |
+| GET | `/api/leads` | Retrieve mortgage leads |
+| POST | `/api/leads` | Create a mortgage lead |
+
+### Deployment
+
+The application was deployed to AWS EC2 using the service deployment script.
+
+**Application:** https://startup.sugarsantillan.com
+
+**GitHub:** https://github.com/sugar-s-santillan/startup
+
+**Note:** User accounts and mortgage leads are currently stored in server memory. They reset whenever the backend restarts. Persistent storage will be implemented in the DB deliverable.
