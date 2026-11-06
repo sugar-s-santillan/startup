@@ -1,24 +1,34 @@
+import { useState } from 'react';
 import FormInput from './FormInput.jsx';
 
 export default function AddLeadForm({ onClose, onSave }) {
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState('');
 
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault();
 
     const formData = new FormData(event.currentTarget);
 
     const newLead = {
-      id: crypto.randomUUID(),
       fullName: formData.get('fullName'),
       address: formData.get('address'),
       creditScore: formData.get('creditScore'),
       loanType: formData.get('loanType'),
       loanAmount: formData.get('loanAmount'),
-      dateAdded: new Date().toLocaleDateString(),
     };
 
-    onSave(newLead);
-    onClose();
+    setSaving(true);
+    setError('');
+
+    try {
+      await onSave(newLead);
+      onClose();
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setSaving(false);
+    }
   }
 
   return (
@@ -80,17 +90,24 @@ export default function AddLeadForm({ onClose, onSave }) {
             placeholder="250000"
           />
 
+          {error && <p role="alert">{error}</p>}
+
           <div className="modal-actions">
             <button
               type="button"
               className="secondary-button"
               onClick={onClose}
+              disabled={saving}
             >
               Cancel
             </button>
 
-            <button type="submit" className="primary-button">
-              Save Lead
+            <button
+              type="submit"
+              className="primary-button"
+              disabled={saving}
+            >
+              {saving ? 'Saving...' : 'Save Lead'}
             </button>
           </div>
         </form>

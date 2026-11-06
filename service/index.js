@@ -3,24 +3,29 @@ import bcrypt from 'bcryptjs';
 import { v4 as uuidv4 } from 'uuid';
 import cookieParser from 'cookie-parser';
 
-
 const app = express();
 const port = process.argv.length > 2 ? process.argv[2] : 4000;
-// Temporary in-memory user storage
-const users = [];
 
 const authCookieName = 'token';
 
-// Parse incoming JSON
+// Temporary in-memory storage
+const users = [];
+const leads = [];
+
+// Middleware
 app.use(express.json());
 app.use(cookieParser());
 
-// Serve the React frontend in production
+// Serve React frontend in production
 app.use(express.static('public'));
 
 // API router
 const apiRouter = express.Router();
 app.use('/api', apiRouter);
+
+// ----------------------------------
+// GENERAL API ENDPOINTS
+// ----------------------------------
 
 // Health check
 apiRouter.get('/health', (_req, res) => {
@@ -30,7 +35,7 @@ apiRouter.get('/health', (_req, res) => {
   });
 });
 
-// Temporary endpoint for loan products
+// Available loan products
 apiRouter.get('/products', (_req, res) => {
   res.json([
     {
@@ -46,6 +51,9 @@ apiRouter.get('/products', (_req, res) => {
   ]);
 });
 
+// ----------------------------------
+// AUTHENTICATION
+// ----------------------------------
 
 // Register a new user
 apiRouter.post('/auth/create', async (req, res) => {
@@ -74,12 +82,12 @@ apiRouter.post('/auth/create', async (req, res) => {
     });
   }
 
+  // Hash password with BCrypt
   const passwordHash = await bcrypt.hash(password, 10);
 
   const user = {
     email: normalizedEmail,
     password: passwordHash,
-    token: uuidv4(),
   };
 
   users.push(user);
@@ -89,27 +97,35 @@ apiRouter.post('/auth/create', async (req, res) => {
   });
 });
 
-
-// Login an existing user
+// Login
 apiRouter.post('/auth/login', async (req, res) => {
   const { email, password } = req.body ?? {};
 
-  if (typeof email !== 'string' || typeof password !== 'string') {
-    return res.status(400).json({ msg: 'Email and password are required' });
+  if (
+    typeof email !== 'string' ||
+    typeof password !== 'string'
+  ) {
+    return res.status(400).json({
+      msg: 'Email and password are required',
+    });
   }
 
   const user = users.find(
     (u) => u.email === email.trim().toLowerCase()
   );
 
-  if (!user || !(await bcrypt.compare(password, user.password))) {
-    return res.status(401).json({ msg: 'Invalid email or password' });
+  if (
+    !user ||
+    !(await bcrypt.compare(password, user.password))
+  ) {
+    return res.status(401).json({
+      msg: 'Invalid email or password',
+    });
   }
 
-  // Generate a new authentication token
+  // Generate authentication token
   user.token = uuidv4();
 
-  // Store the token in an HTTP-only cookie
   res.cookie(authCookieName, user.token, {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
@@ -117,15 +133,18 @@ apiRouter.post('/auth/login', async (req, res) => {
     path: '/',
   });
 
-  res.json({ email: user.email });
+  res.json({
+    email: user.email,
+  });
 });
-
 
 // Logout
 apiRouter.delete('/auth/logout', (req, res) => {
   const token = req.cookies?.[authCookieName];
 
-  const user = users.find((u) => u.token === token);
+  const user = users.find(
+    (u) => u.token && u.token === token
+  );
 
   if (user) {
     delete user.token;
@@ -140,12 +159,16 @@ apiRouter.delete('/auth/logout', (req, res) => {
   res.status(204).end();
 });
 
+// ----------------------------------
+// AUTHENTICATION MIDDLEWARE
+// ----------------------------------
 
-// Verify authentication before accessing protected endpoints
 function verifyAuth(req, res, next) {
   const token = req.cookies?.[authCookieName];
 
-  const user = users.find((u) => u.token && u.token === token);
+  const user = users.find(
+    (u) => u.token && u.token === token
+  );
 
   if (!user) {
     return res.status(401).json({
@@ -157,7 +180,7 @@ function verifyAuth(req, res, next) {
   next();
 }
 
-// Protected endpoint: Current user
+// Get currently authenticated user
 apiRouter.get('/auth/me', verifyAuth, (req, res) => {
   res.json({
     email: req.user.email,
@@ -165,12 +188,86 @@ apiRouter.get('/auth/me', verifyAuth, (req, res) => {
   });
 });
 
+// ----------------------------------
+// LEADS API
+// ----------------------------------
+
+// Get leads belonging to logged-in user
+apiRouter.get('/leads', verifyAuth, (req, res) => {
+  const userLeads = leads.filter(
+    (lead) => lead.owner === req.user.email
+  );
+
+  res.json(userLeads);
+});
+
+// Create a new lead
+apiRouter.post('/leads', verifyAuth, (req, res) => {
+  const {
+    fullName,
+    address,
+    creditScore,
+    loanType,
+    loanAmount,
+  } = req.body ?? {};
+
+  if (
+    typeof fullName !== 'string' ||
+    !fullName.trim() ||
+    typeof address !== 'string' ||
+    !address.trim()
+  ) {
+    return res.status(400).json({
+      msg: 'Full name and property address are required',
+    });
+  }
+
+  const lead = {
+    id: uuidv4(),
+    fullName: fullName.trim(),
+    address: address.trim(),
+    creditScore: creditScore ?? '',
+    loanType: loanType ?? 'Purchase',
+    loanAmount: loanAmount ?? '',
+    dateAdded: new Date().toLocaleDateString(),
+    owner: req.user.email,
+  };
+
+  leads.push(lead);
+
+  res.status(201).json(lead);
+});
+
+// ----------------------------------
+// ERROR HANDLING
+// ----------------------------------
+
+// Handle unknown API endpoints
+apiRouter.use((_req, res) => {
+  res.status(404).json({
+    msg: 'API endpoint not found',
+  });
+});
+
+// Handle server errors
+app.use((err, _req, res, _next) => {
+  console.error(err);
+
+  res.status(500).json({
+    msg: 'Internal server error',
+  });
+});
+
+// ----------------------------------
+// FRONTEND FALLBACK
+// ----------------------------------
 
 // Return React for frontend routes
 app.get(/.*/, (_req, res) => {
   res.sendFile('index.html', { root: 'public' });
 });
 
+// Start Express server
 app.listen(port, () => {
   console.log(`Startup service listening on port ${port}`);
 });

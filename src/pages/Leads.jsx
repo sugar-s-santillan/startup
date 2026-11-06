@@ -5,50 +5,63 @@ import PageLayout from '../components/PageLayout.jsx';
 import AddLeadForm from '../components/AddLeadForm.jsx';
 
 export default function Leads() {
-
   const [showAddLead, setShowAddLead] = useState(false);
   const [search, setSearch] = useState('');
-
-  const [leads, setLeads] = useState(() => {
-  const savedLeads = localStorage.getItem('leads');
-
-  return savedLeads
-    ? JSON.parse(savedLeads)
-    : [
-        {
-          id: '1',
-          fullName: 'John Doe',
-          address: '123 Main Street',
-          creditScore: '720',
-          loanType: 'Purchase',
-          loanAmount: '250000',
-          dateAdded: 'September 23, 2026',
-        },
-      ];
-  });
+  const [leads, setLeads] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
   useEffect(() => {
-    localStorage.setItem('leads', JSON.stringify(leads));
-  }, [leads]);
+    async function loadLeads() {
+      try {
+        const response = await fetch('/api/leads');
+
+        if (!response.ok) {
+          throw new Error('Unable to load leads');
+        }
+
+        const data = await response.json();
+        setLeads(data);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    loadLeads();
+  }, []);
 
   const filteredLeads = leads.filter((lead) => {
-  const searchText = search.toLowerCase();
+    const searchText = search.toLowerCase();
 
-  return (
-    lead.fullName.toLowerCase().includes(searchText) ||
-    lead.address.toLowerCase().includes(searchText)
-  );
+    return (
+      lead.fullName.toLowerCase().includes(searchText) ||
+      lead.address.toLowerCase().includes(searchText)
+    );
   });
 
-  function handleAddLead(newLead) {
-    setLeads((previousLeads) => [...previousLeads, newLead]);
+  async function handleAddLead(newLead) {
+    const response = await fetch('/api/leads', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(newLead),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.msg || 'Unable to save lead');
+    }
+
+    setLeads((previousLeads) => [...previousLeads, data]);
   }
 
   return (
     <PageLayout>
       <div className="page-container">
-
-        {/* Page heading */}
         <section className="dashboard-heading">
           <div>
             <h1>Mortgage Pricer + Lender Matrix</h1>
@@ -64,7 +77,6 @@ export default function Leads() {
           </button>
         </section>
 
-        {/* Leads table */}
         <section className="table-card">
           <div className="form-group">
             <input
@@ -75,6 +87,9 @@ export default function Leads() {
               aria-label="Search leads"
             />
           </div>
+
+          {loading && <p>Loading leads...</p>}
+          {error && <p role="alert">{error}</p>}
 
           <div className="table-wrapper">
             <table>
@@ -106,19 +121,20 @@ export default function Leads() {
                 ))}
               </tbody>
             </table>
+
+            {!loading && !error && filteredLeads.length === 0 && (
+              <p>No leads found.</p>
+            )}
           </div>
         </section>
-
       </div>
 
-      {/* Add Lead popup */}
       {showAddLead && (
         <AddLeadForm
           onClose={() => setShowAddLead(false)}
           onSave={handleAddLead}
         />
       )}
-
     </PageLayout>
   );
 }
