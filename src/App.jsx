@@ -1,13 +1,25 @@
-
+import { useEffect, useState } from 'react';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import Login from './pages/Login.jsx';
 import Leads from './pages/Leads.jsx';
 import Pricing from './pages/Pricing.jsx';
 
 function ProtectedRoute({ children }) {
-  const username = localStorage.getItem('username');
+  const [authenticated, setAuthenticated] = useState(null);
 
-  return username ? children : <Navigate to="/" replace />;
+  useEffect(() => {
+    fetch('/api/auth/me')
+      .then((response) => {
+        setAuthenticated(response.ok);
+      })
+      .catch(() => setAuthenticated(false));
+  }, []);
+
+  if (authenticated === null) {
+    return <p>Checking authentication...</p>;
+  }
+
+  return authenticated ? children : <Navigate to="/" replace />;
 }
 
 export default function App() {

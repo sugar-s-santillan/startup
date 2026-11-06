@@ -43,8 +43,7 @@ export default function Login() {
         return await authenticateLogin();
       }
 
-      localStorage.setItem('username', username.trim());
-navigate('/leads');
+      navigate('/leads');
     } catch (err) {
       setError(err.message);
     } finally {
@@ -71,8 +70,7 @@ navigate('/leads');
       throw new Error(data.msg || 'Login failed');
     }
 
-    localStorage.setItem('username', username.trim());
-navigate('/leads');
+    navigate('/leads');
   }
 
   function handleSubmit(event) {

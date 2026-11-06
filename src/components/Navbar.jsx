@@ -1,12 +1,38 @@
+
+import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 export default function Navbar({ showBackButton = false }) {
   const navigate = useNavigate();
-  const username = localStorage.getItem('username') || 'Guest';
+  const [username, setUsername] = useState('');
 
-  function handleLogout() {
-    localStorage.removeItem('username');
-    navigate('/');
+  useEffect(() => {
+    fetch('/api/auth/me')
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Not authenticated');
+        }
+        return response.json();
+      })
+      .then((data) => setUsername(data.email))
+      .catch(() => setUsername('Guest'));
+  }, []);
+
+  async function handleLogout() {
+    try {
+      const response = await fetch('/api/auth/logout', {
+        method: 'DELETE',
+      });
+
+      if (!response.ok) {
+        throw new Error('Logout failed');
+      }
+
+      navigate('/');
+    } catch (error) {
+      console.error('Logout failed:', error);
+      alert('Unable to log out. Please try again.');
+    }
   }
 
   return (
