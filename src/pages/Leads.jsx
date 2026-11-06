@@ -10,6 +10,7 @@ export default function Leads() {
   const [leads, setLeads] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [quote, setQuote] = useState('');
 
   useEffect(() => {
     async function loadLeads() {
@@ -29,7 +30,23 @@ export default function Leads() {
       }
     }
 
+    async function loadQuote() {
+      try {
+        const response = await fetch('https://quote.cs260.click');
+
+        if (!response.ok) {
+          throw new Error('Unable to load quote');
+        }
+
+        const data = await response.json();
+        setQuote(data.quote || '');
+      } catch (err) {
+        console.error('Third-party API error:', err);
+      }
+    }
+
     loadLeads();
+    loadQuote();
   }, []);
 
   const filteredLeads = leads.filter((lead) => {
@@ -76,6 +93,14 @@ export default function Leads() {
             + Add Lead
           </button>
         </section>
+
+        {quote && (
+          <section className="table-card">
+            <p>
+              <strong>Quote of the Day:</strong> {quote}
+            </p>
+          </section>
+        )}
 
         <section className="table-card">
           <div className="form-group">
