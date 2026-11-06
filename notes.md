@@ -163,3 +163,15 @@ I used useEffect to save lead information to localStorage. This allows leads to 
 I also learned how to use conditional rendering and JavaScript array methods such as map and filter to build an interactive lender eligibility matrix.
 One important concept I learned is that calculated values, such as LTV and lender eligibility, do not need separate state variables. React can calculate them directly from existing state whenever the component renders.
 
+
+## Startup Service
+
+I learned how to build a backend using Node.js and Express.
+I created API endpoints for registration, login, logout,
+loan products, and lead management.
+I used BCrypt to hash passwords and HTTP-only cookies
+to authenticate users.
+I connected React to the backend using fetch() and
+integrated a third-party quote API.
+Users and leads are temporarily stored in memory.
+Persistent storage will be added in Startup DB.
