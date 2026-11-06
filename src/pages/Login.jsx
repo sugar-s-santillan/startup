@@ -8,18 +8,76 @@ export default function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  function handleSubmit(event) {
-    event.preventDefault();
-
+  async function authenticate(endpoint) {
     if (!username.trim() || !password.trim()) {
-      setError('Please enter your username and password.');
+      setError('Please enter your email and password.');
       return;
     }
 
     setError('');
+    setLoading(true);
+
+    try {
+      const response = await fetch(endpoint, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'same-origin',
+        body: JSON.stringify({
+          email: username.trim(),
+          password,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.msg || 'Authentication failed');
+      }
+
+      // Registration creates the account, but login sets the cookie.
+      if (endpoint === '/api/auth/create') {
+        return await authenticateLogin();
+      }
+
+      localStorage.setItem('username', username.trim());
+navigate('/leads');
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function authenticateLogin() {
+    const response = await fetch('/api/auth/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'same-origin',
+      body: JSON.stringify({
+        email: username.trim(),
+        password,
+      }),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.msg || 'Login failed');
+    }
+
     localStorage.setItem('username', username.trim());
-    navigate('/leads');
+navigate('/leads');
+  }
+
+  function handleSubmit(event) {
+    event.preventDefault();
+    authenticate('/api/auth/login');
   }
 
   return (
@@ -39,13 +97,15 @@ export default function Login() {
 
           <form onSubmit={handleSubmit}>
             <FormInput
-              label="Username"
+              label="Email"
               id="username"
-              placeholder="Enter your username"
+              type="email"
+              placeholder="Enter your email"
               value={username}
               onChange={(event) => setUsername(event.target.value)}
               required
             />
+
             <FormInput
               label="Password"
               id="password"
@@ -59,10 +119,20 @@ export default function Login() {
             {error && <p role="alert">{error}</p>}
 
             <div className="button-group">
-              <button type="submit" className="primary-button">
-                Log in
+              <button
+                type="submit"
+                className="primary-button"
+                disabled={loading}
+              >
+                {loading ? 'Please wait...' : 'Log in'}
               </button>
-              <button type="button" className="secondary-button">
+
+              <button
+                type="button"
+                className="secondary-button"
+                disabled={loading}
+                onClick={() => authenticate('/api/auth/create')}
+              >
                 Create Account
               </button>
             </div>
