@@ -121,6 +121,51 @@ apiRouter.post('/auth/login', async (req, res) => {
 });
 
 
+// Logout
+apiRouter.delete('/auth/logout', (req, res) => {
+  const token = req.cookies?.[authCookieName];
+
+  const user = users.find((u) => u.token === token);
+
+  if (user) {
+    delete user.token;
+  }
+
+  res.clearCookie(authCookieName, {
+    path: '/',
+    sameSite: 'strict',
+    secure: process.env.NODE_ENV === 'production',
+  });
+
+  res.status(204).end();
+});
+
+
+// Verify authentication before accessing protected endpoints
+function verifyAuth(req, res, next) {
+  const token = req.cookies?.[authCookieName];
+
+  const user = users.find((u) => u.token && u.token === token);
+
+  if (!user) {
+    return res.status(401).json({
+      msg: 'Unauthorized',
+    });
+  }
+
+  req.user = user;
+  next();
+}
+
+// Protected endpoint: Current user
+apiRouter.get('/auth/me', verifyAuth, (req, res) => {
+  res.json({
+    email: req.user.email,
+    authenticated: true,
+  });
+});
+
+
 // Return React for frontend routes
 app.get(/.*/, (_req, res) => {
   res.sendFile('index.html', { root: 'public' });
