@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
@@ -6,17 +7,34 @@ import AddLeadForm from '../components/AddLeadForm.jsx';
 
 export default function Leads() {
   const navigate = useNavigate();
+
   const [showAddLead, setShowAddLead] = useState(false);
   const [search, setSearch] = useState('');
   const [leads, setLeads] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [quote, setQuote] = useState('');
+  const [deletingId, setDeletingId] = useState(null);
 
+  // Redirect users whose session has expired.
+  function handleUnauthorized(response) {
+    if (response.status === 401) {
+      navigate('/', { replace: true });
+      return true;
+    }
+
+    return false;
+  }
+
+  // Load leads from MongoDB through the backend API.
   useEffect(() => {
+    let active = true;
+
     async function loadLeads() {
       try {
-        const response = await fetch('/api/leads');
+        const response = await fetch('/api/leads', {
+          credentials: 'same-origin',
+        });
 
         if (response.status === 401) {
           navigate('/', { replace: true });
@@ -24,15 +42,23 @@ export default function Leads() {
         }
 
         if (!response.ok) {
-          throw new Error('Unable to load leads');
+          throw new Error('Unable to load leads. Please try again.');
         }
 
         const data = await response.json();
-        setLeads(data);
+
+        if (active) {
+          setLeads(data);
+          setError('');
+        }
       } catch (err) {
-        setError(err.message);
+        if (active) {
+          setError(err.message);
+        }
       } finally {
-        setLoading(false);
+        if (active) {
+          setLoading(false);
+        }
       }
     }
 
@@ -45,18 +71,26 @@ export default function Leads() {
         }
 
         const data = await response.json();
-        setQuote(data.quote || '');
-      } catch (err) {
-        console.error('Third-party API error:', err);
+
+        if (active) {
+          setQuote(data.quote || '');
+        }
+      } catch {
+        // The quote is optional and should not block the dashboard.
       }
     }
 
     loadLeads();
     loadQuote();
+
+    return () => {
+      active = false;
+    };
   }, [navigate]);
 
+  // Filter leads without modifying database records.
   const filteredLeads = leads.filter((lead) => {
-    const searchText = search.toLowerCase();
+    const searchText = search.trim().toLowerCase();
 
     return (
       lead.fullName.toLowerCase().includes(searchText) ||
@@ -64,37 +98,71 @@ export default function Leads() {
     );
   });
 
+  // Save new leads to MongoDB.
   async function handleAddLead(newLead) {
-    const response = await fetch('/api/leads', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(newLead),
-    });
+    setError('');
 
-    const data = await response.json();
+    try {
+      const response = await fetch('/api/leads', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'same-origin',
+        body: JSON.stringify(newLead),
+      });
 
-    if (!response.ok) {
-      throw new Error(data.msg || 'Unable to save lead');
+      if (handleUnauthorized(response)) {
+        throw new Error('Your session has expired. Please log in again.');
+      }
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.msg || 'Unable to save lead.');
+      }
+
+      setLeads((previousLeads) => [...previousLeads, data]);
+      setShowAddLead(false);
+      setError('');
+    } catch (err) {
+      setError(err.message);
+      throw err;
     }
-
-    setLeads((previousLeads) => [...previousLeads, data]);
   }
 
+  // Delete only leads owned by the authenticated user.
   async function handleDeleteLead(id) {
-    const response = await fetch(`/api/leads/${encodeURIComponent(id)}`, {
-      method: 'DELETE',
-    });
+    if (deletingId !== null) return;
 
-    if (!response.ok) {
-      setError('Unable to delete lead');
-      return;
+    setDeletingId(id);
+    setError('');
+
+    try {
+      const response = await fetch(
+        `/api/leads/${encodeURIComponent(id)}`,
+        {
+          method: 'DELETE',
+          credentials: 'same-origin',
+        }
+      );
+
+      if (handleUnauthorized(response)) {
+        return;
+      }
+
+      if (!response.ok) {
+        throw new Error('Unable to delete lead. Please try again.');
+      }
+
+      setLeads((previousLeads) =>
+        previousLeads.filter((lead) => lead.id !== id)
+      );
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setDeletingId(null);
     }
-
-    setLeads((previousLeads) =>
-      previousLeads.filter((lead) => lead.id !== id)
-    );
   }
 
   return (
@@ -109,7 +177,10 @@ export default function Leads() {
           <button
             type="button"
             className="primary-button"
-            onClick={() => setShowAddLead(true)}
+            onClick={() => {
+              setError('');
+              setShowAddLead(true);
+            }}
           >
             + Add Lead
           </button>
@@ -135,7 +206,12 @@ export default function Leads() {
           </div>
 
           {loading && <p>Loading leads...</p>}
-          {error && <p role="alert">{error}</p>}
+
+          {error && (
+            <p role="alert" className="error-message">
+              {error}
+            </p>
+          )}
 
           <div className="table-wrapper">
             <table>
@@ -167,9 +243,12 @@ export default function Leads() {
                     <td>
                       <button
                         type="button"
+                        disabled={deletingId !== null}
                         onClick={() => handleDeleteLead(lead.id)}
                       >
-                        Delete
+                        {deletingId === lead.id
+                          ? 'Deleting...'
+                          : 'Delete'}
                       </button>
                     </td>
                   </tr>
@@ -178,7 +257,11 @@ export default function Leads() {
             </table>
 
             {!loading && !error && filteredLeads.length === 0 && (
-              <p>No leads found.</p>
+              <p>
+                {search.trim()
+                  ? 'No leads match your search.'
+                  : 'No leads found. Add your first lead to get started.'}
+              </p>
             )}
           </div>
         </section>
