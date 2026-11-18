@@ -83,6 +83,10 @@ apiRouter.post('/auth/create', async (req, res) => {
 
   const normalizedEmail = email.trim().toLowerCase();
 
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(normalizedEmail)) {
+    return res.status(400).json({ msg: 'A valid email address is required' });
+  }
+
   const existingUser = await DB.getUser(normalizedEmail);
 
   if (existingUser) {
