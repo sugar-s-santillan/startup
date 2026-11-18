@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Footer from '../components/Footer.jsx';
@@ -5,6 +6,7 @@ import FormInput from '../components/FormInput.jsx';
 
 export default function Login() {
   const navigate = useNavigate();
+
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -40,7 +42,8 @@ export default function Login() {
 
       // Registration creates the account, but login sets the cookie.
       if (endpoint === '/api/auth/create') {
-        return await authenticateLogin();
+        await authenticateLogin();
+        return;
       }
 
       navigate('/leads');
@@ -82,7 +85,9 @@ export default function Login() {
     <div className="app-layout">
       <header className="login-header">
         <div className="page-container">
-          <h1 id="app-title">Prometheus Mortgage Pricer</h1>
+          <h1 id="app-title">
+            Prometheus Mortgage Pricer
+          </h1>
         </div>
       </header>
 
@@ -90,7 +95,9 @@ export default function Login() {
         <section className="login-card">
           <div className="login-heading">
             <h2>Welcome back</h2>
-            <p>Log in to access the lender-matching tool.</p>
+            <p>
+              Log in to access the lender-matching tool.
+            </p>
           </div>
 
           <form onSubmit={handleSubmit}>
@@ -120,7 +127,11 @@ export default function Login() {
               required
             />
 
-            {error && <p role="alert">{error}</p>}
+            {error && (
+              <p role="alert" className="error-message">
+                {error}
+              </p>
+            )}
 
             <div className="button-group">
               <button
@@ -143,6 +154,22 @@ export default function Login() {
           </form>
         </section>
       </main>
+
+      {/* GitHub repository link for CS 260 grading */}
+      <div
+        style={{
+          textAlign: 'center',
+          padding: '16px',
+        }}
+      >
+        <a
+          href="https://github.com/sugar-s-santillan/startup"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          View Source Code on GitHub
+        </a>
+      </div>
 
       <Footer />
     </div>

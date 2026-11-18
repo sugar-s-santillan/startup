@@ -189,3 +189,23 @@ The lead owner comes from the authenticated user, never from submitted JSON. Mon
 `service/dbConfig.json` stays local with owner-only permissions and is ignored by Git. Generated `build/` packages and cookie jars are also ignored. Database credentials, raw driver errors, and connection URLs must never be logged. TLS certificate verification stays enabled.
 
 Local verification on November 17, 2026 used fictional accounts and leads only. The opt-in integration test checks real Atlas persistence, user isolation, hashes, cookie flags, session invalidation/expiry, Vite proxy requests, and restart behavior, then cleans up its records and processes. The production frontend build passed. No Git commits, pushes, or AWS deployment were performed. See README.md for commands and remaining submission steps.
+
+
+
+## Startup Service
+
+I learned how to build a backend using Node.js and Express. I created API endpoints for user registration, login, logout, loan products, and mortgage lead management.
+
+React communicates with the backend using `fetch()`. The application also retrieves programming quotes from a third-party API.
+
+## What changed with Startup DB
+
+Originally, users and leads were stored temporarily in memory. This meant data could disappear when the backend restarted.
+
+MongoDB Atlas now stores user accounts and mortgage leads permanently. React retrieves the information through authenticated API requests.
+
+I also learned how database indexes work, how BCrypt protects passwords, and how HTTP-only cookies can be used for authentication.
+
+The Leads dashboard now supports creating and deleting records, searching, filtering, sorting, analytics, and CSV exports.
+
+The most important lesson was understanding how the frontend, backend, and database work together to create a persistent web application.

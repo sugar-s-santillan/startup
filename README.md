@@ -153,15 +153,78 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 - [x] **Supports registration, login, logout, and restricted endpoint** - I did complete this part of the deliverable.
 - [x] **Uses BCrypt to hash passwords** - I did complete this part of the deliverable.
 
+
 ## 🚀 DB deliverable
 
-For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
+For this deliverable, I integrated MongoDB Atlas into my Prometheus Mortgage startup application.
 
-- [ ] I completed the prerequisites for this deliverable (Simon deployed, GitHub link, Git commits). Local DB work is ready for review; DB commits, push, production deployment, and Simon prerequisite verification remain.
-- [x] **Stores data in MongoDB** - `service/database.js` stores leads in the `startup.leads` collection on the existing Atlas cluster. Every query is scoped to the authenticated owner. Creating and retrieving a fictional lead after restarting the backend passed locally.
-- [x] **Stores credentials in MongoDB** - `startup.users` stores normalized unique emails and BCrypt hashes. Login sets an HTTP-only, SameSite cookie (Secure in production); only SHA-256 session token hashes and expiration dates are stored. Registration, login, logout, token expiry, and restart persistence passed against Atlas.
+- [x] **Stores application data in MongoDB** - Mortgage leads are stored in the `startup.leads` collection. Users can create, retrieve, and delete leads through the Express API. Leads remain available after refreshing the page or restarting the backend.
+- [x] **Stores user credentials in MongoDB** - Registered users are stored in the `startup.users` collection. Passwords are hashed using BCrypt rather than stored as plaintext.
+- [x] **Authentication and sessions** - Users can register, log in, and log out. Login creates an HTTP-only cookie, and the database stores a hashed session token with an expiration date.
+- [x] **User-specific data** - Each lead is associated with its authenticated owner. Database queries filter leads by owner so users cannot access another user's leads.
+- [x] **Frontend integration** - React uses `fetch()` to communicate with the backend instead of relying on localStorage for persistent leads.
+- [x] **Lead management improvements** - Added validation, deletion, search, sorting, filtering, dashboard statistics, and CSV export.
+- [x] **Database configuration security** - MongoDB connection credentials are stored in `service/dbConfig.json`, which is excluded from Git.
 
-These checks describe local implementation and verification, not a production deployment. Rubric reference: [official startup template](https://github.com/webprogramming260/startup#-db-deliverable). Confirm current Canvas requirements before submission.
+### MongoDB structure
+
+Database: `startup`
+
+| Collection | Purpose |
+| --- | --- |
+| `users` | Stores email addresses, BCrypt password hashes, and session information |
+| `leads` | Stores mortgage leads associated with authenticated users |
+
+### API endpoints
+
+| Method | Endpoint | Description |
+| --- | --- | --- |
+| GET | `/api/health` | Check backend health |
+| GET | `/api/products` | Retrieve available loan products |
+| POST | `/api/auth/create` | Register a new user |
+| POST | `/api/auth/login` | Log in |
+| DELETE | `/api/auth/logout` | Log out |
+| GET | `/api/auth/me` | Check the authenticated user |
+| GET | `/api/leads` | Retrieve the current user's leads |
+| POST | `/api/leads` | Save a new lead |
+| DELETE | `/api/leads/:id` | Delete a lead owned by the current user |
+
+### Running locally
+
+Install frontend and backend dependencies:
+
+```bash
+npm install
+cd service
+npm install
+cd ..
+```
+
+Start the backend:
+
+```bash
+cd service
+node index.js
+```
+
+In a separate terminal, start React:
+
+```bash
+npm run dev
+```
+
+The backend requires a valid local `service/dbConfig.json` configured for MongoDB Atlas. This file must never be committed to GitHub.
+
+### Deployment
+
+**Application:** https://startup.sugarsantillan.com
+
+**GitHub:** https://github.com/sugar-s-santillan/startup
+
+**Simon:** https://simon.sugarsantillan.com
+
+The MongoDB integration is implemented locally. Production deployment and verification must be completed separately.
+
 
 ## 🚀 WebSocket deliverable
 
@@ -173,9 +236,6 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 - [ ] **Data sent over WebSocket connection** - I did complete this part of the deliverable.
 - [ ] **WebSocket data displayed** - I did complete this part of the deliverable.
 - [ ] **Application is fully functional** - I did complete this part of the deliverable.
-
-
-
 
 
 
