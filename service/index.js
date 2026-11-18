@@ -129,7 +129,7 @@ apiRouter.post('/auth/login', async (req, res) => {
   }
 
   if (Buffer.byteLength(password, 'utf8') > 72) {
-    return res.status(400).json({ msg: 'Password must be at most 72 UTF-8 bytes' });
+    return res.status(401).json({ msg: 'Invalid email or password' });
   }
 
   const user = await DB.getUser(email.trim().toLowerCase());
