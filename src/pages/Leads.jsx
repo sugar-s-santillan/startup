@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import PageLayout from '../components/PageLayout.jsx';
 import AddLeadForm from '../components/AddLeadForm.jsx';
 
 export default function Leads() {
+  const navigate = useNavigate();
   const [showAddLead, setShowAddLead] = useState(false);
   const [search, setSearch] = useState('');
   const [leads, setLeads] = useState([]);
@@ -16,6 +17,11 @@ export default function Leads() {
     async function loadLeads() {
       try {
         const response = await fetch('/api/leads');
+
+        if (response.status === 401) {
+          navigate('/', { replace: true });
+          return;
+        }
 
         if (!response.ok) {
           throw new Error('Unable to load leads');
@@ -47,7 +53,7 @@ export default function Leads() {
 
     loadLeads();
     loadQuote();
-  }, []);
+  }, [navigate]);
 
   const filteredLeads = leads.filter((lead) => {
     const searchText = search.toLowerCase();
