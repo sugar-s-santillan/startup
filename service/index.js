@@ -2,15 +2,22 @@ import express from 'express';
 import bcrypt from 'bcryptjs';
 import { v4 as uuidv4 } from 'uuid';
 import cookieParser from 'cookie-parser';
+import { randomBytes, createHash } from 'node:crypto';
+import * as DB from './database.js';
 
 const app = express();
 const port = process.argv.length > 2 ? process.argv[2] : 4000;
 
 const authCookieName = 'token';
 
-// Temporary in-memory storage
-const users = [];
-const leads = [];
+const sessionDuration = 7 * 24 * 60 * 60 * 1000;
+const hashToken = (token) => createHash('sha256').update(token).digest('hex');
+const cookieOptions = {
+  httpOnly: true,
+  secure: process.env.NODE_ENV === 'production',
+  sameSite: 'strict',
+  path: '/',
+};
 
 // Middleware
 app.use(express.json());
@@ -70,11 +77,13 @@ apiRouter.post('/auth/create', async (req, res) => {
     });
   }
 
+  if (Buffer.byteLength(password, 'utf8') > 72) {
+    return res.status(400).json({ msg: 'Password must be at most 72 UTF-8 bytes' });
+  }
+
   const normalizedEmail = email.trim().toLowerCase();
 
-  const existingUser = users.find(
-    (user) => user.email === normalizedEmail
-  );
+  const existingUser = await DB.getUser(normalizedEmail);
 
   if (existingUser) {
     return res.status(409).json({
@@ -90,7 +99,12 @@ apiRouter.post('/auth/create', async (req, res) => {
     password: passwordHash,
   };
 
-  users.push(user);
+  try {
+    await DB.addUser(user);
+  } catch (err) {
+    if (err.code === 11000) return res.status(409).json({ msg: 'User already exists' });
+    throw err;
+  }
 
   res.json({
     email: user.email,
@@ -110,9 +124,11 @@ apiRouter.post('/auth/login', async (req, res) => {
     });
   }
 
-  const user = users.find(
-    (u) => u.email === email.trim().toLowerCase()
-  );
+  if (Buffer.byteLength(password, 'utf8') > 72) {
+    return res.status(400).json({ msg: 'Password must be at most 72 UTF-8 bytes' });
+  }
+
+  const user = await DB.getUser(email.trim().toLowerCase());
 
   if (
     !user ||
@@ -123,15 +139,10 @@ apiRouter.post('/auth/login', async (req, res) => {
     });
   }
 
-  // Generate authentication token
-  user.token = uuidv4();
-
-  res.cookie(authCookieName, user.token, {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: 'strict',
-    path: '/',
-  });
+  // Keep only a hash of the random bearer token in MongoDB.
+  const token = randomBytes(32).toString('hex');
+  await DB.setSession(user.email, hashToken(token), new Date(Date.now() + sessionDuration));
+  res.cookie(authCookieName, token, { ...cookieOptions, maxAge: sessionDuration });
 
   res.json({
     email: user.email,
@@ -139,23 +150,10 @@ apiRouter.post('/auth/login', async (req, res) => {
 });
 
 // Logout
-apiRouter.delete('/auth/logout', (req, res) => {
+apiRouter.delete('/auth/logout', async (req, res) => {
   const token = req.cookies?.[authCookieName];
-
-  const user = users.find(
-    (u) => u.token && u.token === token
-  );
-
-  if (user) {
-    delete user.token;
-  }
-
-  res.clearCookie(authCookieName, {
-    path: '/',
-    sameSite: 'strict',
-    secure: process.env.NODE_ENV === 'production',
-  });
-
+  if (typeof token === 'string') await DB.removeSession(hashToken(token));
+  res.clearCookie(authCookieName, cookieOptions);
   res.status(204).end();
 });
 
@@ -163,12 +161,12 @@ apiRouter.delete('/auth/logout', (req, res) => {
 // AUTHENTICATION MIDDLEWARE
 // ----------------------------------
 
-function verifyAuth(req, res, next) {
+async function verifyAuth(req, res, next) {
   const token = req.cookies?.[authCookieName];
 
-  const user = users.find(
-    (u) => u.token && u.token === token
-  );
+  const user = typeof token === 'string' && /^[a-f0-9]{64}$/.test(token)
+    ? await DB.getUserByToken(hashToken(token))
+    : null;
 
   if (!user) {
     return res.status(401).json({
@@ -193,16 +191,14 @@ apiRouter.get('/auth/me', verifyAuth, (req, res) => {
 // ----------------------------------
 
 // Get leads belonging to logged-in user
-apiRouter.get('/leads', verifyAuth, (req, res) => {
-  const userLeads = leads.filter(
-    (lead) => lead.owner === req.user.email
-  );
+apiRouter.get('/leads', verifyAuth, async (req, res) => {
+  const userLeads = await DB.getLeads(req.user.email);
 
   res.json(userLeads);
 });
 
 // Create a new lead
-apiRouter.post('/leads', verifyAuth, (req, res) => {
+apiRouter.post('/leads', verifyAuth, async (req, res) => {
   const {
     fullName,
     address,
@@ -222,6 +218,11 @@ apiRouter.post('/leads', verifyAuth, (req, res) => {
     });
   }
 
+  if (![creditScore, loanAmount].every((value) => value == null || typeof value === 'string' || (typeof value === 'number' && Number.isFinite(value))) ||
+      (loanType != null && typeof loanType !== 'string')) {
+    return res.status(400).json({ msg: 'Invalid lead field types' });
+  }
+
   const lead = {
     id: uuidv4(),
     fullName: fullName.trim(),
@@ -233,7 +234,7 @@ apiRouter.post('/leads', verifyAuth, (req, res) => {
     owner: req.user.email,
   };
 
-  leads.push(lead);
+  await DB.addLead(lead);
 
   res.status(201).json(lead);
 });
@@ -251,7 +252,9 @@ apiRouter.use((_req, res) => {
 
 // Handle server errors
 app.use((err, _req, res, _next) => {
-  console.error(err);
+  // Driver errors may contain connection details; never print raw errors.
+  console.error('API request failed');
+  if (err.type === 'entity.parse.failed') return res.status(400).json({ msg: 'Invalid JSON' });
 
   res.status(500).json({
     msg: 'Internal server error',
@@ -267,7 +270,22 @@ app.get(/.*/, (_req, res) => {
   res.sendFile('index.html', { root: 'public' });
 });
 
-// Start Express server
-app.listen(port, () => {
-  console.log(`Startup service listening on port ${port}`);
-});
+// Refuse to accept requests until MongoDB and its indexes are ready.
+let server;
+try {
+  await DB.connect();
+  server = app.listen(port, () => {
+    console.log(`Startup service listening on port ${port}`);
+  });
+} catch {
+  console.error('Database startup failed. Check service/dbConfig.json, Atlas database permissions, Network Access, DNS, and TLS trust.');
+  await DB.close();
+  process.exitCode = 1;
+}
+
+for (const signal of ['SIGINT', 'SIGTERM']) {
+  process.once(signal, () => {
+    if (server) server.close(async () => { await DB.close(); });
+    else void DB.close();
+  });
+}
