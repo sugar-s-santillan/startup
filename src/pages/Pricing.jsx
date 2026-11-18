@@ -112,9 +112,9 @@ export default function Pricing() {
         <section className="pricing-heading">
           <div>
             <p className="page-label">Loan Pricing</p>
-            <h1>John Doe</h1>
+            <h1>Find the right lending fit.</h1>
             <p>
-              Review borrower information and compare lender eligibility.
+              Build a loan scenario and compare your options at a glance.
             </p>
           </div>
         </section>
@@ -124,8 +124,8 @@ export default function Pricing() {
           {/* Borrower information */}
           <section className="content-card">
             <div className="card-heading">
-              <h2>Loan Details</h2>
-              <p>Borrower and property information</p>
+              <h2>Borrower profile</h2>
+              <p>Sample borrower and property information</p>
             </div>
 
             <div className="loan-details">
@@ -181,7 +181,7 @@ export default function Pricing() {
             </div>
 
             <form
-              className="pricing-form"
+              className="pricing-form scenario-form"
               onSubmit={(event) => event.preventDefault()}
             >
               <fieldset className="loan-type-fieldset">
@@ -347,10 +347,10 @@ export default function Pricing() {
 
           <div className="table-wrapper">
             {!hasValidLoan ? (
-              <p>
-                Enter a valid property value, loan amount, and
-                credit score to evaluate lenders.
-              </p>
+              <div className="table-state">
+                <h3>Your lender matches will appear here</h3>
+                <p>Enter a valid property value, loan amount, and credit score to evaluate lenders.</p>
+              </div>
             ) : (
               <table className="lender-table">
                 <thead>
@@ -373,11 +373,11 @@ export default function Pricing() {
                       <td>{lender.maxLtv}%</td>
 
                       <td>
-                        <strong>
+                        <span className={`eligibility-badge ${lender.eligible ? 'eligible' : 'ineligible'}`}>
                           {lender.eligible
                             ? 'Eligible'
                             : 'Ineligible'}
-                        </strong>
+                        </span>
                       </td>
 
                       <td>

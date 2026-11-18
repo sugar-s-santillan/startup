@@ -1,10 +1,19 @@
 
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import FormInput from './FormInput.jsx';
+
+import Icon from './Icon.jsx';
 
 export default function AddLeadForm({ onClose, onSave }) {
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
+  const dialogRef = useRef(null);
+
+  useEffect(() => {
+    const dialog = dialogRef.current;
+    dialog.showModal();
+    return () => dialog.close();
+  }, []);
 
   async function handleSubmit(event) {
     event.preventDefault();
@@ -72,16 +81,19 @@ export default function AddLeadForm({ onClose, onSave }) {
   }
 
   return (
-    <div className="modal-overlay" onClick={handleClose}>
+    <dialog ref={dialogRef} className="modal-overlay" aria-labelledby="add-lead-title"
+      onCancel={(event) => { event.preventDefault(); handleClose(); }}
+      onClick={(event) => { if (event.target === event.currentTarget) handleClose(); }}>
       <div
         className="modal-content"
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="add-lead-title"
         onClick={(event) => event.stopPropagation()}
       >
         <div className="modal-header">
-          <h2 id="add-lead-title">Add New Lead</h2>
+          <div>
+            <p className="page-label">GROW YOUR PIPELINE</p>
+            <h2 id="add-lead-title">Add a new lead</h2>
+            <p>Start with the borrower and property details.</p>
+          </div>
 
           <button
             type="button"
@@ -90,11 +102,11 @@ export default function AddLeadForm({ onClose, onSave }) {
             disabled={saving}
             aria-label="Close"
           >
-            ✕
+            <Icon name="close" />
           </button>
         </div>
 
-        <form className="pricing-form" onSubmit={handleSubmit}>
+        <form className="pricing-form modal-form" onSubmit={handleSubmit}>
           <FormInput
             label="Full Name"
             id="fullName"
@@ -167,6 +179,6 @@ export default function AddLeadForm({ onClose, onSave }) {
           </div>
         </form>
       </div>
-    </div>
+    </dialog>
   );
 }

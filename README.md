@@ -1,4 +1,4 @@
-# Prometheus Mortgage - Underwriting Matrix
+# Mortgage - Underwriting Matrix
 
 [My Notes](notes.md)
 
@@ -156,7 +156,7 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 
 ## 🚀 DB deliverable
 
-For this deliverable, I integrated MongoDB Atlas into my Prometheus Mortgage startup application.
+For this deliverable, I integrated MongoDB Atlas into my Mortgage startup application.
 
 - [x] **Stores application data in MongoDB** - Mortgage leads are stored in the `startup.leads` collection. Users can create, retrieve, and delete leads through the Express API. Leads remain available after refreshing the page or restarting the backend.
 - [x] **Stores user credentials in MongoDB** - Registered users are stored in the `startup.users` collection. Passwords are hashed using BCrypt rather than stored as plaintext.

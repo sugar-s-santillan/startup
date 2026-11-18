@@ -4,6 +4,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import PageLayout from '../components/PageLayout.jsx';
 import AddLeadForm from '../components/AddLeadForm.jsx';
 
+import Icon from '../components/Icon.jsx';
+
 export default function Leads() {
   const navigate = useNavigate();
 
@@ -256,7 +258,7 @@ export default function Leads() {
     const link = document.createElement('a');
 
     link.href = url;
-    link.download = 'prometheus-leads.csv';
+    link.download = 'mortgage-leads.csv';
     document.body.appendChild(link);
     link.click();
     link.remove();
@@ -269,10 +271,10 @@ export default function Leads() {
 
         <section className="dashboard-heading">
           <div>
-            <h1>Mortgage Pricer + Lender Matrix</h1>
+            <p className="page-label">YOUR WORKSPACE</p>
+            <h1>Lead overview</h1>
             <p>
-              Manage your leads, review loan activity,
-              and access lender pricing.
+              A clear view of your pipeline. Every borrower, every opportunity.
             </p>
           </div>
 
@@ -284,73 +286,38 @@ export default function Leads() {
               setShowAddLead(true);
             }}
           >
-            + Add Lead
+            <Icon name="plus" /> Add Lead
           </button>
         </section>
 
-        {/* Dashboard statistics */}
-        <section
-          className="dashboard-stats"
-          style={{
-            display: 'grid',
-            gridTemplateColumns:
-              'repeat(auto-fit, minmax(180px, 1fr))',
-            gap: '16px',
-            marginBottom: '24px',
-          }}
-        >
+        <section className="dashboard-stats" aria-label="Pipeline statistics">
           {[
-            { label: 'Total Leads', value: statistics.total },
-            { label: 'Purchase Loans', value: statistics.purchases },
-            { label: 'Refinance Loans', value: statistics.refinances },
-            {
-              label: 'Requested Loan Volume',
-              value: formatCurrency(statistics.totalVolume),
-            },
+            { label: 'Total Leads', value: statistics.total, icon: 'users', note: 'In your pipeline' },
+            { label: 'Purchase Loans', value: statistics.purchases, icon: 'home', note: 'New property financing' },
+            { label: 'Refinance Loans', value: statistics.refinances, icon: 'refresh', note: 'Existing property financing' },
+            { label: 'Requested Loan Volume', value: formatCurrency(statistics.totalVolume), icon: 'money', note: 'Across your entire pipeline' },
           ].map((stat) => (
-            <div
-              key={stat.label}
-              className="table-card"
-              style={{ padding: '20px' }}
-            >
-              <p style={{ marginBottom: '8px' }}>
-                {stat.label}
-              </p>
-              <h2 style={{ margin: 0 }}>
-                {stat.value}
-              </h2>
+            <div key={stat.label} className="stat-card">
+              <div className="stat-label"><span>{stat.label}</span><Icon name={stat.icon} /></div>
+              <h2>{loading ? '—' : stat.value}</h2>
+              <p>{stat.note}</p>
             </div>
           ))}
         </section>
 
-        {quote && (
-          <section className="table-card">
-            <p>
-              <strong>Quote of the Day:</strong> {quote}
-            </p>
-          </section>
-        )}
-
-        <section className="table-card">
-
+        <section className="table-card leads-card" aria-label="Lead pipeline">
+          <div className="table-heading"><div><h2>Your leads <span className="count-badge">{leads.length}</span></h2><p>Manage borrower details and explore lender options.</p></div><span className="section-label">PIPELINE</span></div>
           {/* Search and filtering controls */}
-          <div
-            style={{
-              display: 'flex',
-              flexWrap: 'wrap',
-              gap: '12px',
-              marginBottom: '20px',
-              alignItems: 'center',
-            }}
-          >
+          <div className="leads-toolbar">
+            <div className="search-field"><Icon name="search" />
             <input
               type="text"
-              placeholder="Search leads..."
+              placeholder="Search name, address, or loan type…"
               value={search}
               onChange={(event) => setSearch(event.target.value)}
               aria-label="Search leads"
-              style={{ flex: '2 1 200px' }}
             />
+            </div>
 
             <select
               value={loanFilter}
@@ -380,15 +347,15 @@ export default function Leads() {
               onClick={exportLeads}
               disabled={filteredLeads.length === 0}
             >
-              Export CSV
+              <Icon name="download" /> Export CSV
             </button>
           </div>
 
-          <p>
+          <p className="results-count" aria-live="polite">
             Showing {filteredLeads.length} of {leads.length} leads
           </p>
 
-          {loading && <p>Loading leads...</p>}
+          {loading && <div className="table-state" role="status"><span className="loading-indicator" /><h3>Loading your pipeline</h3><p>Getting your latest lead information…</p></div>}
 
           {error && (
             <p role="alert" className="error-message">
@@ -414,11 +381,11 @@ export default function Leads() {
               <tbody>
                 {filteredLeads.map((lead) => (
                   <tr key={lead.id}>
-                    <td>{lead.fullName}</td>
-                    <td>{lead.address}</td>
+                    <td><span className="borrower-name">{lead.fullName}</span></td>
+                    <td className="address-cell">{lead.address}</td>
                     <td>{lead.creditScore || '—'}</td>
-                    <td>{lead.loanType}</td>
-                    <td>
+                    <td><span className={`loan-badge ${lead.loanType?.toLowerCase() === 'refinance' ? 'refinance' : 'purchase'}`}>{lead.loanType}</span></td>
+                    <td className="money-cell">
                       {lead.loanAmount
                         ? formatCurrency(Number(lead.loanAmount))
                         : '—'}
@@ -429,18 +396,18 @@ export default function Leads() {
                         to="/pricing"
                         className="table-link"
                       >
-                        View Pricing
+                        View pricing <Icon name="arrow" />
                       </Link>
                     </td>
                     <td>
                       <button
                         type="button"
+                        className="delete-button"
+                        aria-label={`Delete lead for ${lead.fullName}`}
                         disabled={deletingId !== null}
                         onClick={() => handleDeleteLead(lead.id)}
                       >
-                        {deletingId === lead.id
-                          ? 'Deleting...'
-                          : 'Delete'}
+                        <Icon name="trash" /> {deletingId === lead.id ? 'Deleting…' : 'Delete'}
                       </button>
                     </td>
                   </tr>
@@ -451,14 +418,15 @@ export default function Leads() {
             {!loading &&
               !error &&
               filteredLeads.length === 0 && (
-                <p>
+                <div className="table-state"><span className="empty-icon"><Icon name="users" /></span><h3>{leads.length === 0 ? 'Your pipeline starts here' : 'No matching leads'}</h3><p>
                   {leads.length === 0
                     ? 'No leads yet. Add your first lead.'
-                    : 'No leads match your filters.'}
-                </p>
+                    : 'Try a different search or loan type.'}
+                </p></div>
               )}
           </div>
         </section>
+        {quote && <aside className="daily-quote"><Icon name="quote" /><span><strong>A moment of perspective</strong> {quote}</span></aside>}
       </div>
 
       {showAddLead && (

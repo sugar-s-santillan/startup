@@ -38,7 +38,7 @@ app.use('/api', apiRouter);
 apiRouter.get('/health', (_req, res) => {
   res.json({
     status: 'ok',
-    service: 'Prometheus Mortgage API',
+    service: 'Mortgage API',
   });
 });
 

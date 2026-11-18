@@ -1,6 +1,9 @@
 
 import { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
+
+import Icon from './Icon.jsx';
+import Brand from './Brand.jsx';
 
 export default function Navbar({ showBackButton = false }) {
   const navigate = useNavigate();
@@ -37,19 +40,18 @@ export default function Navbar({ showBackButton = false }) {
 
   return (
     <header className="dashboard-header">
-      <nav className="page-container navbar-content">
+      <nav className="page-container navbar-content" aria-label="Main navigation">
         <Link to="/leads" className="brand">
-          Prometheus Mortgage
+          <Brand />
         </Link>
 
+        <div className="nav-links">
+          <NavLink to="/leads"><Icon name="grid" /> Leads</NavLink>
+          <NavLink to="/pricing"><Icon name="chart" /> Pricing</NavLink>
+        </div>
         <div className="navbar-actions">
-          {showBackButton && (
-            <Link to="/leads" className="back-link">
-              ← Back to Leads
-            </Link>
-          )}
-
-          <span className="logged-in-user">
+          <span className="user-avatar" aria-hidden="true">{username.slice(0, 1).toUpperCase() || 'M'}</span>
+          <span className="logged-in-user" title={username}>
             {username}
           </span>
 
@@ -58,10 +60,11 @@ export default function Navbar({ showBackButton = false }) {
             className="logout-link"
             onClick={handleLogout}
           >
-            Log out
+            <Icon name="logout" /> Log out
           </button>
         </div>
       </nav>
+      {showBackButton && <div className="page-container back-nav"><Link to="/leads" className="back-link">← Back to leads</Link></div>}
     </header>
   );
 }

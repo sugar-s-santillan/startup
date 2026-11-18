@@ -4,6 +4,9 @@ import { useNavigate } from 'react-router-dom';
 import Footer from '../components/Footer.jsx';
 import FormInput from '../components/FormInput.jsx';
 
+import Brand from '../components/Brand.jsx';
+import Icon from '../components/Icon.jsx';
+
 export default function Login() {
   const navigate = useNavigate();
 
@@ -85,18 +88,19 @@ export default function Login() {
     <div className="app-layout">
       <header className="login-header">
         <div className="page-container">
-          <h1 id="app-title">
-            Prometheus Mortgage Pricer
-          </h1>
+          <div className="brand" id="app-title"><Brand /></div>
+          <span className="login-header-label">Your lending workspace</span>
         </div>
       </header>
 
       <main className="page-main login-main">
         <section className="login-card">
+          <div className="login-symbol"><Icon name="lock" /></div>
           <div className="login-heading">
-            <h2>Welcome back</h2>
+            <p className="page-label">WELCOME TO MORTGAGE</p>
+            <h1>Welcome back</h1>
             <p>
-              Log in to access the lender-matching tool.
+              Your pipeline, pricing, and next opportunity.
             </p>
           </div>
 
@@ -139,7 +143,7 @@ export default function Login() {
                 className="primary-button"
                 disabled={loading}
               >
-                {loading ? 'Please wait...' : 'Log in'}
+                {loading ? 'Please wait...' : 'Log in to your workspace'}
               </button>
 
               <button
@@ -152,16 +156,12 @@ export default function Login() {
               </button>
             </div>
           </form>
+          <p className="login-note"><Icon name="lock" /> A private workspace for your mortgage leads.</p>
         </section>
       </main>
 
       {/* GitHub repository link for CS 260 grading */}
-      <div
-        style={{
-          textAlign: 'center',
-          padding: '16px',
-        }}
-      >
+      <div className="login-source">
         <a
           href="https://github.com/sugar-s-santillan/startup"
           target="_blank"
