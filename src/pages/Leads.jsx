@@ -76,6 +76,21 @@ export default function Leads() {
     setLeads((previousLeads) => [...previousLeads, data]);
   }
 
+  async function handleDeleteLead(id) {
+    const response = await fetch(`/api/leads/${encodeURIComponent(id)}`, {
+      method: 'DELETE',
+    });
+
+    if (!response.ok) {
+      setError('Unable to delete lead');
+      return;
+    }
+
+    setLeads((previousLeads) =>
+      previousLeads.filter((lead) => lead.id !== id)
+    );
+  }
+
   return (
     <PageLayout>
       <div className="page-container">
@@ -126,6 +141,7 @@ export default function Leads() {
                   <th>Loan Type</th>
                   <th>Date Added</th>
                   <th>Pricing</th>
+                  <th>Actions</th>
                 </tr>
               </thead>
 
@@ -141,6 +157,14 @@ export default function Leads() {
                       <Link to="/pricing" className="table-link">
                         View Pricing
                       </Link>
+                    </td>
+                    <td>
+                      <button
+                        type="button"
+                        onClick={() => handleDeleteLead(lead.id)}
+                      >
+                        Delete
+                      </button>
                     </td>
                   </tr>
                 ))}
