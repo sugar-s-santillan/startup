@@ -61,7 +61,7 @@ I am going to use the required technologies in the following ways.
 - **CSS** - CSS will add flavor and style to the HTML backbone. I am going to utilize the already existing CSS color scheme and palette used at our company. I will also use the font, spacing, indicators, etc. Something I personally want to add is animations. When a lender is no longer applicable, I want it to light up red and phase away. So it reorganizes itself alongside changing colors. 
 - **React** - React will be the frontend framework used to engage with the user (loan officer). It will be used for components, displaying information/warnings. and update the webpage as changes are made. React will reactively update the webpage as information changes. React routing will also be used to navigate between pages such as the lead list and individual lead profiles.
 - **Service** - I will use AWS to host and Node.js as a backend service layer that will provide server functionality. It will handle retrieving and sending data through API's. The backend will provide endopoints for obtaining lead information. The backend will also call a third-party API to retrieve mortgage rates to indicate whether our base rate for pricing is accurate.
-- **DB/Login** - Idk if we get to pick which Database service for our projects, but if I could I would select Supabase. The database will store user authenticatation information for borrowers and store loan/borrower information. 
+- **DB/Login** - MongoDB Atlas stores user email addresses, BCrypt password hashes, expiring session token hashes, and mortgage leads associated with their owner.
 - **WebSocket** - Websockets will allow us to update the webpage real time so that when a new lead comes through the loan officer receives it. Thus, prevening multiple users from handling the same lead. It will also provide constant information for the user in case any changes are needed. 
 
 > AI was barely used to revise and summarize the Technologies section (minor help). 
@@ -157,9 +157,11 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
-- [ ] I completed the prerequisites for this deliverable (Simon deployed, GitHub link, Git commits)
-- [ ] **Stores data in MongoDB** - I did complete this part of the deliverable.
-- [ ] **Stores credentials in MongoDB** - I did complete this part of the deliverable.
+- [ ] I completed the prerequisites for this deliverable (Simon deployed, GitHub link, Git commits). Local DB work is ready for review; DB commits, push, production deployment, and Simon prerequisite verification remain.
+- [x] **Stores data in MongoDB** - `service/database.js` stores leads in the `startup.leads` collection on the existing Atlas cluster. Every query is scoped to the authenticated owner. Creating and retrieving a fictional lead after restarting the backend passed locally.
+- [x] **Stores credentials in MongoDB** - `startup.users` stores normalized unique emails and BCrypt hashes. Login sets an HTTP-only, SameSite cookie (Secure in production); only SHA-256 session token hashes and expiration dates are stored. Registration, login, logout, token expiry, and restart persistence passed against Atlas.
+
+These checks describe local implementation and verification, not a production deployment. Rubric reference: [official startup template](https://github.com/webprogramming260/startup#-db-deliverable). Confirm current Canvas requirements before submission.
 
 ## 🚀 WebSocket deliverable
 
@@ -198,4 +200,40 @@ The application was deployed to AWS EC2 using the service deployment script.
 
 **GitHub:** https://github.com/sugar-s-santillan/startup
 
-**Note:** User accounts and mortgage leads are currently stored in server memory. They reset whenever the backend restarts. Persistent storage will be implemented in the DB deliverable.
+**Local DB integration:** User accounts and mortgage leads now persist in MongoDB Atlas. The production site has not been updated by this work.
+
+### Local MongoDB setup and verification
+
+Use Node.js 22. The existing dependencies include the official MongoDB driver; no additional packages are needed.
+
+1. Run `npm ci` in the repository root and `npm ci --prefix service` if dependencies are missing.
+2. Create `service/dbConfig.json` using the shape in `service/dbConfig.json.example`. Supply the existing Cluster0 hostname, Atlas database username, and password privately. The local file was securely copied from Simon DB; Simon itself was not changed. Never add this file or cookie jars to Git.
+3. In Atlas Database Access, ensure the database user has the necessary read/write and index permissions on `startup`. In Network Access, allow the development computer's public IP. Later, allow the EC2 outbound public IP for production. Do not disable TLS certificate verification or allow all IPs to solve a connection failure.
+4. Start the backend in one terminal: `cd service && npm start` (port 4000).
+5. In another terminal at the repository root, run `npm run dev`. Open the URL Vite prints; its `/api` proxy uses port 4000.
+6. Run `npm run build` for the production bundle. To run the live database tests, stop the manual backend first, then run `npm run test:db --prefix service`. The tests use ports 4000 and 5178 and automatically remove only their uniquely named fictional users/leads and stop their servers. Normal `npm test --prefix service` skips live Atlas access.
+
+Startup pings Atlas and creates indexes before accepting HTTP requests. The database name is fixed to `startup`, with `users` and `leads` collections; Simon's database remains separate. Unique indexes protect user emails and lead IDs, a sparse unique index supports token lookup, and an owner index supports lead queries. A new login replaces the previous session; sessions expire after seven days. Expiry is checked during authentication, without a TTL index that could delete user accounts.
+
+If startup fails, privately verify the configuration fields, Atlas user permissions and password, IP access list, SRV DNS resolution, and trusted CA certificates. Raw driver errors and connection strings are intentionally not logged. A restricted execution sandbox may block DNS/network access even when Atlas is correctly configured; the local verification succeeded with permitted network access.
+
+### Local verification (November 17, 2026)
+
+- Live Atlas connection and index creation passed with TLS verification enabled.
+- Fictional registration, duplicate email rejection, BCrypt hash verification, login, current-user lookup, token rotation, expiration, logout, and unauthorized rejection passed.
+- Lead creation, all response fields, forged-owner override, second-user isolation, and user/session/lead persistence across backend restart passed. Unsupported lead mutation endpoints return 404; no update/delete lead endpoints existed previously.
+- Vite served the frontend, and login/lead requests through its development proxy passed. Production Secure cookie behavior passed; `npm run build` passed. Interactive browser layout/form testing remains a manual review step.
+- Test records were removed and test servers stopped. No commits, pushes, AWS changes, or deployments were performed.
+
+### Review and later submission
+
+Suggested future commits, after reviewing diffs:
+
+1. Protect local database secrets and cookie jars; add the MongoDB connection module and dependency/lockfile changes.
+2. Persist users and expiring hashed sessions, and scope persistent leads to their owners.
+3. Add the opt-in live Atlas integration test and test scripts.
+4. Document DB verification and prepare deployment packaging.
+
+Before deploying later: review these changes, verify the current Canvas rubric and Simon DB prerequisite, make meaningful commits and push only when authorized, verify EC2 Atlas access and Node compatibility, and deploy using `deployService.sh` only when authorized. The script now packages an explicit set of JSON files under restrictive permissions and restarts PM2 with `NODE_ENV=production` so Secure cookies are enabled. The script was syntax-checked but has not been run against AWS. Verify HTTPS registration/login/logout and lead persistence at `startup.sugarsantillan.com`, complete the prerequisite checkbox, and submit the required URLs in Canvas.
+
+Potential hardening beyond the DB deliverable: login rate limiting, stronger email/password policy, pagination and stricter lead value/length limits, and a startup-specific least-privilege Atlas account rather than shared Simon credentials. The removed tracked `service/cookies.txt` should remain deleted in the later commit; ignoring a path does not remove its historical copies. Review any previously published session cookies and invalidate them if still active. WebSocket work remains a later deliverable.

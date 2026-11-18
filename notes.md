@@ -176,3 +176,16 @@ integrated a third-party quote API.
 Users and leads are temporarily stored in memory.
 Persistent storage will be added in Startup DB.
 
+
+
+## Startup DB
+
+MongoDB Atlas now stores users and mortgage leads in the `startup` database on the existing cluster. Simon uses a separate database and was not modified. The connection module pings Atlas and creates indexes before Express starts listening, so the service cannot silently fall back to temporary arrays.
+
+BCrypt hashes passwords; MongoDB never receives plaintext passwords. BCrypt accepts at most 72 UTF-8 bytes, so longer passwords are rejected rather than silently truncated. Login generates a random 256-bit token, stores its SHA-256 hash and expiry in MongoDB, and sends the token in an HTTP-only, SameSite cookie. Production adds Secure. Logout removes the stored hash, and login rotates the session. Authentication checks expiry on every protected request.
+
+The lead owner comes from the authenticated user, never from submitted JSON. MongoDB queries always filter by owner, and `_id` is excluded from responses to preserve the frontend's existing `id` format. Lead records and authentication survive backend restarts.
+
+`service/dbConfig.json` stays local with owner-only permissions and is ignored by Git. Generated `build/` packages and cookie jars are also ignored. Database credentials, raw driver errors, and connection URLs must never be logged. TLS certificate verification stays enabled.
+
+Local verification on November 17, 2026 used fictional accounts and leads only. The opt-in integration test checks real Atlas persistence, user isolation, hashes, cookie flags, session invalidation/expiry, Vite proxy requests, and restart behavior, then cleans up its records and processes. The production frontend build passed. No Git commits, pushes, or AWS deployment were performed. See README.md for commands and remaining submission steps.

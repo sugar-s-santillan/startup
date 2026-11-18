@@ -19,3 +19,8 @@ npm-debug.log*
 # Editor settings
 .vscode/
 .idea/cookies.txt
+
+# Database secrets and generated deployment packages
+service/dbConfig.json
+build/
+**/cookies.txt
