@@ -243,6 +243,23 @@ apiRouter.post('/leads', verifyAuth, async (req, res) => {
   res.status(201).json(lead);
 });
 
+
+// Delete a lead belonging to the logged-in user
+apiRouter.delete('/leads/:id', verifyAuth, async (req, res) => {
+  const result = await DB.deleteLead(
+    req.params.id,
+    req.user.email
+  );
+
+  if (result.deletedCount === 0) {
+    return res.status(404).json({
+      msg: 'Lead not found',
+    });
+  }
+
+  res.status(204).end();
+});
+
 // ----------------------------------
 // ERROR HANDLING
 // ----------------------------------

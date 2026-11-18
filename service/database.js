@@ -41,3 +41,8 @@ export function getLeads(owner) {
   return leads.find({ owner }, { projection: { _id: 0 } }).toArray();
 }
 export function addLead(lead) { return leads.insertOne({ ...lead }); }
+
+
+export function deleteLead(id, owner) {
+  return leads.deleteOne({ id, owner });
+}
