@@ -100,7 +100,10 @@ export default function Login() {
               type="email"
               placeholder="Enter your email"
               value={username}
-              onChange={(event) => setUsername(event.target.value)}
+              onChange={(event) => {
+                setUsername(event.target.value);
+                setError('');
+              }}
               required
             />
 
@@ -110,7 +113,10 @@ export default function Login() {
               type="password"
               placeholder="Enter your password"
               value={password}
-              onChange={(event) => setPassword(event.target.value)}
+              onChange={(event) => {
+                setPassword(event.target.value);
+                setError('');
+              }}
               required
             />
 
